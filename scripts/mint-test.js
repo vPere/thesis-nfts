@@ -25,8 +25,9 @@ async function main() {
                 params: [minter],
             });
             const signer = await ethers.getSigner(minter);
+            console.log("OK");
         } catch (e) {
-            print(e)
+            console.log(`Error: ${e.message}`);
         }
         //const signer = ethers.provider.getSigner();  // Use the default signer (e.g., first account in local node)
     }
