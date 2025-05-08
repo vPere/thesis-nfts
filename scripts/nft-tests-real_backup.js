@@ -18,14 +18,23 @@ async function main() {
     const nft = new ethers.Contract(address, abi, ethers.provider);
 
     // Impersonate a known privileged address (e.g., minter)
-    // const minter = '0xSomeMinterAddress'; // Example: replace with a known minter address
-    // await network.provider.request({
-    //   method: 'hardhat_impersonateAccount',
-    //   params: [minter],
-    // });
-    // const signer = await ethers.getSigner(minter);
+    const minter = '0x29469395eAf6f95920E59F858042f0e28D98a20B'; // Example: replace with a known minter address
+    try {
+      await network.provider.request({
+        method: 'hardhat_impersonateAccount',
+        params: [minter],
+      });
+      console.log("Impersonation OK");
+      const funder = (await ethers.getSigners())[0]; // default account with ETH
+      await funder.sendTransaction({
+        to: minter,
+        value: ethers.utils.parseEther("1.0"), // send 1 ETH
+      });
+    } catch (e) {
+      console.log(`Error: ${e.message}`);
+    }
 
-    const signer = ethers.provider.getSigner();  // Use the default signer (e.g., first account in local node)
+    const signer = await ethers.getSigner(minter);
 
     // === TEST 1: Minting with empty URI
     try {
@@ -54,20 +63,21 @@ async function main() {
     }
 
     // === TEST 4: Unauthorized mint
-    // const unauthorized = '0xAnotherAddress'; // Example: use a random address or one without minter role
-    // await network.provider.request({
-    //   method: 'hardhat_impersonateAccount',
-    //   params: [unauthorized],
-    // });
-    // const badSigner = await ethers.getSigner(unauthorized);
-    // const badNft = nft.connect(badSigner);
+    const unauthorized = '0xAnotherAddress'; // Example: use a random address or one without minter role
+    await network.provider.request({
+      method: 'hardhat_impersonateAccount',
+      params: [unauthorized],
+    });
+    const badSigner = await ethers.getSigner(unauthorized);
+    const badNft = nft.connect(badSigner);
 
-    // try {
-    //   console.log(`Testing ${address} - Unauthorized mint...`);
-    //   await badNft.mint(unauthorized, 9004, "ipfs://fail");
-    // } catch (err) {
-    //   console.log(`✅ Unauthorized mint blocked for ${address}:`, err.message);
-    // }
+    try {
+      console.log(`Testing ${address} - Unauthorized mint...`);
+      //await badNft.mint(unauthorized, 9004, "ipfs://fail");
+      await badNft.mint(1);
+    } catch (err) {
+      console.log(`✅ Unauthorized mint blocked for ${address}:`, err.message);
+    }
   }
 }
 
