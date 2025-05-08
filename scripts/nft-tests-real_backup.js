@@ -211,7 +211,7 @@ async function main() {
             console.log(`✅ Unauthorized mint blocked for ${address}:`, err.message);
             setTestResult(row, "Test4", "PASS")
         }
-
+        /*
         // === TEST 5: Transfer from unauthorized address (caller is not the owner of the token)
         try {
             const recipient = '0x1111111111111111111111111111111111111111'; // Example: replace with a valid recipient address
@@ -233,6 +233,41 @@ async function main() {
         } catch (err) {
             console.log(`✅ Transfer from unauthorized address blocked for ${address}:`, err.message);
             setTestResult(row, "Test5", "PASS")
+        }
+         */
+
+        // === TEST 5: Unauthorized Transfer
+        try {
+            console.log(`Testing ${address} - Unauthorized transferFrom...`);
+
+            // Mint a token first (assuming signer has mint privilege)
+            const tokenId = 9999;
+            await nft.mint(signer.address, tokenId, "ipfs://unauth-transfer");
+
+            // Impersonate a random unauthorized address
+            const attacker = '0x1111111111111111111111111111111111111111';
+            await network.provider.request({
+                method: 'hardhat_impersonateAccount',
+                params: [attacker],
+            });
+            const funder = (await ethers.getSigners())[0]; // default account with ETH
+            await funder.sendTransaction({
+                to: attacker,
+                value: ethers.utils.parseEther("1.0"), // send 1 ETH
+            });
+
+            const attackerSigner = await ethers.getSigner(attacker);
+            const nftFromAttacker = nft.connect(attackerSigner);
+
+            // Try transferring token from signer to attacker without approval
+            await nftFromAttacker.transferFrom(signer.address, attacker, tokenId);
+
+            // If it succeeds, it's vulnerable
+            console.log(`❌ Unauthorized transfer succeeded for ${address}`);
+            setTestResult(row, "Test5", "FAIL");
+        } catch (err) {
+            console.log(`✅ Unauthorized transfer blocked for ${address}:`, err.message);
+            setTestResult(row, "Test5", "PASS");
         }
 
         appendRowToCSV(timestamp, row);
