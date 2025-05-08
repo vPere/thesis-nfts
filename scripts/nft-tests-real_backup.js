@@ -1,283 +1,287 @@
 // nft-tests-real.js
 
-const { ethers, network } = require("hardhat");
+const {ethers, network} = require("hardhat");
 const fs = require("fs");
 const path = require('path');
 
 // List of contract addresses to test
 const contractAddresses = [
-  // Add more contract addresses here
-  '0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e',
-  '0xD90829C6C6012E4DdE506BD95d7499A04b9A56de',
-  '0x60E4d786628Fea6478F785A6d7e704777c86a7c6',
-  '0x524cAB2ec69124574082676e6F654a18df49A048',
-  '0xBd3531dA5CF5857e7CfAA92426877b022e612cf8',
-  '0x059EDD72Cd353dF5106D2B9cC5ab83a52287aC3a',
-  '0x466CFcD0525189b573E794F554b8A751279213Ac',
-  '0x59325733eb952a92e069C87F0A6168b29E80627f',
-  '0xa7d8d9ef8D8Ce8992Df33D8b8CF4Aebabd5bD270',
-  '0x55700cd2E91f39bc56F589B346daC12a7907eA08',
-  '0xE64419a4a32Bf73743118eD18a442C35F64d57d0',
-  '0xB8Ea78fcaCEf50d41375E44E6814ebbA36Bb33c4',
-  '0xED5AF388653567Af2F388E6224dC7C4b3241C544',
-  '0xF39c410Dac956BA98004f411E182FB4EEd595270',
-  '0x5C1A0CC6DAdf4d0fB31425461df35Ba80fCBc110',
-  '0xd1169e5349d1cB9941F3DCbA135C8A4b9eACFDDE',
-  '0xB6a37b5d14D502c3Ab0Ae6f3a0E058BC9517786e',
-  '0xaaDc2D4261199ce24A4B0a57370c4FCf43BB60aa',
-  '0x8A939fd297FAb7388d6e6C634eEe3C863626bE57',
-  '0xB852c6b5892256C264Cc2C888eA462189154D8d7',
-  '0xa8eDF6C9ac6BF1A00AfaACA6E0Ca705B89192fb9',
-  '0x282BDD42f4eb70e7A9D9F40c8fEA0825B7f68C5D',
-  '0xd16809C0a7d82C9E7552a01Fd608fFF90EFb564f',
-  '0x5946aeAAB44e65Eb370FFaa6a7EF2218Cff9b47D',
-  '0xa3AEe8BcE55BEeA1951EF834b99f3Ac60d1ABeeB',
-  '0xd70F41Dd5875EEE7fa9DD8048567bC932124A8d2',
-  '0xba30E5F9Bb24caa003E9f2f0497Ad287FDF95623',
-  '0x062E691c2054dE82F28008a8CCC6d7A1c8ce060D',
-  '0x6339e5E072086621540D0362C4e3Cea0d643E114',
-  '0x8A7ebc8fb603C06834d04af223b89C38229B9a7c',
-  '0xd774557b647330C91Bf44cfEAB205095f7E6c367',
-  '0x8C186802b1992f7650Ac865d4CA94D55fF3C0d17',
-  '0x1A92f7381B9F03921564a437210bB9396471050C',
-  '0xd564C25B760cb278a55bDD98831f4ff4B6C97B38',
-  '0x7Fb2D396a3cc840f2c4213F044566ed400159b40',
-  '0xc9D8F15803c645e98B17710a0b6593F097064bEF',
-  '0x7Bd29408f11D2bFC23c34f18275bBf23bB716Bc7',
-  '0x790B2cF29Ed4F310bf7641f013C65D4560d28371',
-  '0x769272677faB02575E84945F03Eca517ACc544Cc',
-  '0x30D869adB3A0b5D1d281325bea17a30fdc65080C',
-  '0x23581767a106ae21c074b2276D25e5C3e136a68b',
-  '0x6250b989ecf7cb82c7892E1CEA604eD813423635',
-  '0xd21818B6052dF69EEd04E9b2aF564b75140aAcb7',
-  '0x0Fc3DD8C37880a297166BEd57759974A157f0E74',
-  '0x036721e5A769Cc48B3189EFbb9ccE4471E8A48B1',
-  '0x475bFaa1848591ae0E6aB69600f48d828f61a80E',
-  '0xB75F09b4340aEb85Cd5F2Dd87d31751EDC11ed39',
-  '0xbe9371326F91345777b04394448c23E2BFEaa826',
-  '0xa74c0B5aDEa01dF5A43a6C6b5e012Dc8eD5D2687',
-  '0xbAbaFdd8045740449a42B788a26E9b3A32F88aC1',
-  '0x9b7E68482B20D7843201eBf6715B5E86e0114625',
-  '0x9CF0aB1cc434dB83097B7E9c831a764481DEc747',
-  '0x306b1ea3ecdf94aB739F1910bbda052Ed4A9f949',
-  '0xEeca64ea9fCf99A22806Cd99b3d29cf6e8D54925',
-  '0x49cF6f5d44E70224e2E23fDcdd2C053F30aDA28B',
-  '0x1CB1A5e65610AEFF2551A50f76a87a7d3fB649C6',
-  '0x1a3c1Bf0Bd66Eb15cD4A61b76A20Fb68609f97Ef',
-  '0x96e22537c62B04c5C5b5fe9Ad29aaeEB5AB536df',
-  '0xC4973de5eE925b8219f1E74559FB217A8e355EcF',
-  '0xD3D9ddd0CF0A5F0BFB8f7fcEAe075DF687eAEBaB',
-  '0x3bf2922f4520a8BA0c2eFC3D2a1539678DaD5e9D',
-  '0x0000000005756B5a03E751bD0280e3A55BC05B6E',
-  '0x364C828eE171616a39897688A831c2499aD972ec',
-  '0x31385d3520bCED94f77AaE104b406994D8F2168C',
-  '0x09233d553058c2F42ba751C87816a8E9FaE7Ef10',
-  '0x34eEBEE6942d8Def3c125458D1a86e0A897fd6f9',
-  '0x79FCDEF22feeD20eDDacbB2587640e45491b757f',
-  '0x80336Ad7A747236ef41F47ed2C7641828a480BAA',
-  '0xCcc441ac31f02cD96C153DB6fd5Fe0a2F4e6A68d',
-  '0xD93Ec495FABbDEcd6dfA45bc60F9B634874B634b',
-  '0x9613Bef9d9D00Ef87a48a124b8Cab469047C4bCf',
-  '0x87d25e5e755b69943572A58936843FfA894AFd66',
-  '0x74f70713B0515e9F520D6c764352E45e227839b7',
-  '0x98Dc31A9648F04E23e4E36B0456D1951531C2a05',
-  '0xF845e3d7AE916CA50C7Db40808E9Cc579B5f6705',
-  '0x5CC5B05a8A13E3fBDB0BB9FcCd98D38e50F90c38',
-  '0x1AaBA8552D4e2fbFC99bC86F31f28788c7dc1218',
-  '0x963590FaBDc1333D03BC3Af42a6B2Ab33e21e2eE',
-  '0xE90d8Fb7B79C8930B5C8891e61c298b412a6e81a',
-  '0x11B3EfbF04F0bA505F380aC20444B6952970AdA6',
-  '0x67b8afDDb494C16b779E6F23e1de5Dbf3437F857',
-  '0xF6ee484f82f28d69688f37fe90Af514ce212b7c3',
-  '0x9378368ba6b85c1FbA5b131b530f5F5bEdf21A18',
-  '0xFF4c58AE2a73aD5f7903Da3c80cBa77d0347E1EE',
-  '0x3110EF5f612208724CA51F5761A69081809F03B7',
-  '0xe4D20bc4A845aa35B008f5F9f85E50b581dF7263',
-  '0x08D7C0242953446436F34b4C78Fe9da38c73668d',
-  '0x0dA642E3eD481b119cc212b6f1C9BEf04e3211Ab',
-  '0x0FCBD68251819928C8f6D182fC04bE733fA94170',
-  '0xe2fcFBD86E386857a97e0833c888f35405c3Cdd7',
-  '0xA5C8b1c32d05dF6F4E6267485452f784e8AE5007',
-  '0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85',
-  //top mints
-  '0x6599861e55abd28b91dd9d86A826eC0cC8D72c2c',
-  '0x7B5ae07E2AF1C861BcC4736D23f5f66A61E0cA5e',
-  '0xE060C0E862Ea51486aC911A1D448D355a24bDd98',
-  '0xbD216513d74C8cf14cf4747E6AaA6420FF64ee9e',
-  '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
-  '0x0Eb7c84B565196cedFe8C20a7E9510916d58ca6E',
-  '0x7b463415D67B013D5F1106fd3df048973BC214Dd',
-  '0x889edC2eDab5f40e902b864aD4d7AdE8E412F9B1',
-  '0x62e58fe8285733Cd5B0853158c2D2A054B45DE4F',
-  '0xF8fFe7b5AD42E07dd88eE7269E966105A94D4090',
-  '0xd9e61FFD35edFBf09aE5d80Bee15371eFdC5D9FD',
-  '0xc9FE03E3c1E96C95f6c2fe36942eAF923311f99c',
-  '0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85',
-  '0x41dDf7fC14a579E0F3f2D698e14c76d9d486B9F7',
-  '0xc7C31c106153b3917320d1E2646deD759535B2C5',
-  '0x0B2eF910ad0b34bf575Eb09d37fd7DA6c148CA4d',
-  '0x823dE2c44369e94CAc3DA789Ad4b6493e27e4Bfe',
-  '0x00EAC15E09179BF5F119877b1982f65445CC46fF',
-  '0x8881C19665BBF8FA0677900d0E6C689e71bd8db7',
-  '0xF23270e58A3F4e275751924476E145D51e0FC96c',
+    // Add more contract addresses here
+    '0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e',
+    '0xD90829C6C6012E4DdE506BD95d7499A04b9A56de',
+    '0x60E4d786628Fea6478F785A6d7e704777c86a7c6',
+    '0x524cAB2ec69124574082676e6F654a18df49A048',
+    '0xBd3531dA5CF5857e7CfAA92426877b022e612cf8',
+    '0x059EDD72Cd353dF5106D2B9cC5ab83a52287aC3a',
+    '0x466CFcD0525189b573E794F554b8A751279213Ac',
+    '0x59325733eb952a92e069C87F0A6168b29E80627f',
+    '0xa7d8d9ef8D8Ce8992Df33D8b8CF4Aebabd5bD270',
+    '0x55700cd2E91f39bc56F589B346daC12a7907eA08',
+    '0xE64419a4a32Bf73743118eD18a442C35F64d57d0',
+    '0xB8Ea78fcaCEf50d41375E44E6814ebbA36Bb33c4',
+    '0xED5AF388653567Af2F388E6224dC7C4b3241C544',
+    '0xF39c410Dac956BA98004f411E182FB4EEd595270',
+    '0x5C1A0CC6DAdf4d0fB31425461df35Ba80fCBc110',
+    '0xd1169e5349d1cB9941F3DCbA135C8A4b9eACFDDE',
+    '0xB6a37b5d14D502c3Ab0Ae6f3a0E058BC9517786e',
+    '0xaaDc2D4261199ce24A4B0a57370c4FCf43BB60aa',
+    '0x8A939fd297FAb7388d6e6C634eEe3C863626bE57',
+    '0xB852c6b5892256C264Cc2C888eA462189154D8d7',
+    '0xa8eDF6C9ac6BF1A00AfaACA6E0Ca705B89192fb9',
+    '0x282BDD42f4eb70e7A9D9F40c8fEA0825B7f68C5D',
+    '0xd16809C0a7d82C9E7552a01Fd608fFF90EFb564f',
+    '0x5946aeAAB44e65Eb370FFaa6a7EF2218Cff9b47D',
+    '0xa3AEe8BcE55BEeA1951EF834b99f3Ac60d1ABeeB',
+    '0xd70F41Dd5875EEE7fa9DD8048567bC932124A8d2',
+    '0xba30E5F9Bb24caa003E9f2f0497Ad287FDF95623',
+    '0x062E691c2054dE82F28008a8CCC6d7A1c8ce060D',
+    '0x6339e5E072086621540D0362C4e3Cea0d643E114',
+    '0x8A7ebc8fb603C06834d04af223b89C38229B9a7c',
+    '0xd774557b647330C91Bf44cfEAB205095f7E6c367',
+    '0x8C186802b1992f7650Ac865d4CA94D55fF3C0d17',
+    '0x1A92f7381B9F03921564a437210bB9396471050C',
+    '0xd564C25B760cb278a55bDD98831f4ff4B6C97B38',
+    '0x7Fb2D396a3cc840f2c4213F044566ed400159b40',
+    '0xc9D8F15803c645e98B17710a0b6593F097064bEF',
+    '0x7Bd29408f11D2bFC23c34f18275bBf23bB716Bc7',
+    '0x790B2cF29Ed4F310bf7641f013C65D4560d28371',
+    '0x769272677faB02575E84945F03Eca517ACc544Cc',
+    '0x30D869adB3A0b5D1d281325bea17a30fdc65080C',
+    '0x23581767a106ae21c074b2276D25e5C3e136a68b',
+    '0x6250b989ecf7cb82c7892E1CEA604eD813423635',
+    '0xd21818B6052dF69EEd04E9b2aF564b75140aAcb7',
+    '0x0Fc3DD8C37880a297166BEd57759974A157f0E74',
+    '0x036721e5A769Cc48B3189EFbb9ccE4471E8A48B1',
+    '0x475bFaa1848591ae0E6aB69600f48d828f61a80E',
+    '0xB75F09b4340aEb85Cd5F2Dd87d31751EDC11ed39',
+    '0xbe9371326F91345777b04394448c23E2BFEaa826',
+    '0xa74c0B5aDEa01dF5A43a6C6b5e012Dc8eD5D2687',
+    '0xbAbaFdd8045740449a42B788a26E9b3A32F88aC1',
+    '0x9b7E68482B20D7843201eBf6715B5E86e0114625',
+    '0x9CF0aB1cc434dB83097B7E9c831a764481DEc747',
+    '0x306b1ea3ecdf94aB739F1910bbda052Ed4A9f949',
+    '0xEeca64ea9fCf99A22806Cd99b3d29cf6e8D54925',
+    '0x49cF6f5d44E70224e2E23fDcdd2C053F30aDA28B',
+    '0x1CB1A5e65610AEFF2551A50f76a87a7d3fB649C6',
+    '0x1a3c1Bf0Bd66Eb15cD4A61b76A20Fb68609f97Ef',
+    '0x96e22537c62B04c5C5b5fe9Ad29aaeEB5AB536df',
+    '0xC4973de5eE925b8219f1E74559FB217A8e355EcF',
+    '0xD3D9ddd0CF0A5F0BFB8f7fcEAe075DF687eAEBaB',
+    '0x3bf2922f4520a8BA0c2eFC3D2a1539678DaD5e9D',
+    '0x0000000005756B5a03E751bD0280e3A55BC05B6E',
+    '0x364C828eE171616a39897688A831c2499aD972ec',
+    '0x31385d3520bCED94f77AaE104b406994D8F2168C',
+    '0x09233d553058c2F42ba751C87816a8E9FaE7Ef10',
+    '0x34eEBEE6942d8Def3c125458D1a86e0A897fd6f9',
+    '0x79FCDEF22feeD20eDDacbB2587640e45491b757f',
+    '0x80336Ad7A747236ef41F47ed2C7641828a480BAA',
+    '0xCcc441ac31f02cD96C153DB6fd5Fe0a2F4e6A68d',
+    '0xD93Ec495FABbDEcd6dfA45bc60F9B634874B634b',
+    '0x9613Bef9d9D00Ef87a48a124b8Cab469047C4bCf',
+    '0x87d25e5e755b69943572A58936843FfA894AFd66',
+    '0x74f70713B0515e9F520D6c764352E45e227839b7',
+    '0x98Dc31A9648F04E23e4E36B0456D1951531C2a05',
+    '0xF845e3d7AE916CA50C7Db40808E9Cc579B5f6705',
+    '0x5CC5B05a8A13E3fBDB0BB9FcCd98D38e50F90c38',
+    '0x1AaBA8552D4e2fbFC99bC86F31f28788c7dc1218',
+    '0x963590FaBDc1333D03BC3Af42a6B2Ab33e21e2eE',
+    '0xE90d8Fb7B79C8930B5C8891e61c298b412a6e81a',
+    '0x11B3EfbF04F0bA505F380aC20444B6952970AdA6',
+    '0x67b8afDDb494C16b779E6F23e1de5Dbf3437F857',
+    '0xF6ee484f82f28d69688f37fe90Af514ce212b7c3',
+    '0x9378368ba6b85c1FbA5b131b530f5F5bEdf21A18',
+    '0xFF4c58AE2a73aD5f7903Da3c80cBa77d0347E1EE',
+    '0x3110EF5f612208724CA51F5761A69081809F03B7',
+    '0xe4D20bc4A845aa35B008f5F9f85E50b581dF7263',
+    '0x08D7C0242953446436F34b4C78Fe9da38c73668d',
+    '0x0dA642E3eD481b119cc212b6f1C9BEf04e3211Ab',
+    '0x0FCBD68251819928C8f6D182fC04bE733fA94170',
+    '0xe2fcFBD86E386857a97e0833c888f35405c3Cdd7',
+    '0xA5C8b1c32d05dF6F4E6267485452f784e8AE5007',
+    '0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85',
+    //top mints
+    '0x6599861e55abd28b91dd9d86A826eC0cC8D72c2c',
+    '0x7B5ae07E2AF1C861BcC4736D23f5f66A61E0cA5e',
+    '0xE060C0E862Ea51486aC911A1D448D355a24bDd98',
+    '0xbD216513d74C8cf14cf4747E6AaA6420FF64ee9e',
+    '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
+    '0x0Eb7c84B565196cedFe8C20a7E9510916d58ca6E',
+    '0x7b463415D67B013D5F1106fd3df048973BC214Dd',
+    '0x889edC2eDab5f40e902b864aD4d7AdE8E412F9B1',
+    '0x62e58fe8285733Cd5B0853158c2D2A054B45DE4F',
+    '0xF8fFe7b5AD42E07dd88eE7269E966105A94D4090',
+    '0xd9e61FFD35edFBf09aE5d80Bee15371eFdC5D9FD',
+    '0xc9FE03E3c1E96C95f6c2fe36942eAF923311f99c',
+    '0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85',
+    '0x41dDf7fC14a579E0F3f2D698e14c76d9d486B9F7',
+    '0xc7C31c106153b3917320d1E2646deD759535B2C5',
+    '0x0B2eF910ad0b34bf575Eb09d37fd7DA6c148CA4d',
+    '0x823dE2c44369e94CAc3DA789Ad4b6493e27e4Bfe',
+    '0x00EAC15E09179BF5F119877b1982f65445CC46fF',
+    '0x8881C19665BBF8FA0677900d0E6C689e71bd8db7',
+    '0xF23270e58A3F4e275751924476E145D51e0FC96c',
 
     // Vulnerable one:
-  '0xf3821adaceb6500c0a202971aecf840a033f236b',
+    '0xf3821adaceb6500c0a202971aecf840a033f236b',
 ];
 
 async function main() {
-  // Create the output CSV file for this execution
-  const timestamp = getTimestamp();
-  createOutputCSV(timestamp);
+    // Create the output CSV file for this execution
+    const timestamp = getTimestamp();
+    createOutputCSV(timestamp);
 
-  // Loop through each contract address
-  for (const address of contractAddresses) {
+    // Loop through each contract address
+    for (const address of contractAddresses) {
 
-    const row = buildRow(address);
+        const row = buildRow(address);
 
-    const abi = JSON.parse(fs.readFileSync(`abis/${address}.json`, 'utf8'));
-    
-    const nft = new ethers.Contract(address, abi, ethers.provider);
+        const abi = JSON.parse(fs.readFileSync(`abis/${address}.json`, 'utf8'));
 
-    // Impersonate a known privileged address (e.g., minter)
-    const minter = '0x29469395eAf6f95920E59F858042f0e28D98a20B'; // Example: replace with a known minter address
-    try {
-      await network.provider.request({
-        method: 'hardhat_impersonateAccount',
-        params: [minter],
-      });
-      console.log("Impersonation OK");
-      const funder = (await ethers.getSigners())[0]; // default account with ETH
-      await funder.sendTransaction({
-        to: minter,
-        value: ethers.utils.parseEther("1.0"), // send 1 ETH
-      });
-    } catch (e) {
-      console.log(`Error: ${e.message}`);
+        const nft = new ethers.Contract(address, abi, ethers.provider);
+
+        // Impersonate a known privileged address (e.g., minter)
+        const minter = '0x29469395eAf6f95920E59F858042f0e28D98a20B'; // Example: replace with a known minter address
+        try {
+            await network.provider.request({
+                method: 'hardhat_impersonateAccount',
+                params: [minter],
+            });
+            console.log("Impersonation OK");
+            const funder = (await ethers.getSigners())[0]; // default account with ETH
+            await funder.sendTransaction({
+                to: minter,
+                value: ethers.utils.parseEther("1.0"), // send 1 ETH
+            });
+        } catch (e) {
+            console.log(`Error: ${e.message}`);
+        }
+
+        const signer = await ethers.getSigner(minter);
+
+        // === TEST 1: Minting with empty URI
+        try {
+            console.log(`Testing ${address} - Mint with empty URI...`);
+            await nft.mint(signer.address, 9001, "");  // Adjust minting params as needed
+            setTestResult(row, "Test1", "FAIL")
+            console.log(`❌ Mint with empty URI should have failed for ${address}`);
+        } catch (err) {
+            console.log(`✅ Caught empty URI for ${address}:`, err.message);
+            setTestResult(row, "Test1", "PASS")
+        }
+
+        // === TEST 2: Mint to zero address
+        try {
+            const ZERO = '0x0000000000000000000000000000000000000000';
+            console.log(`Testing ${address} - Mint to zero address...`);
+            await nft.mint(ZERO, 9002, "ipfs://validuri");
+            setTestResult(row, "Test2", "FAIL")
+            console.log(`❌ Mint to zero address should have failed for ${address}`);
+        } catch (err) {
+            console.log(`✅ Caught zero address for ${address}:`, err.message);
+            setTestResult(row, "Test2", "PASS")
+        }
+
+        // === TEST 3: Duplicate token ID
+        try {
+            console.log(`Testing ${address} - Mint duplicate tokenId...`);
+            await nft.mint(signer.address, 9003, "ipfs://one");
+            await nft.mint(signer.address, 9003, "ipfs://two");  // Duplicate tokenId
+            setTestResult(row, "Test3", "FAIL")
+            console.log(`❌ Duplicate token ID should have failed for ${address}`);
+        } catch (err) {
+            console.log(`✅ Duplicate token ID caught for ${address}:`, err.message);
+            setTestResult(row, "Test3", "PASS")
+        }
+
+        // === TEST 4: Unauthorized mint
+        try {
+            console.log(`Testing ${address} - Unauthorized mint...`);
+            const unauthorized = '0x29469395eAf6f95920E59F858042f0e28D98a20A'; // Example: use a random address or one without minter role
+            await network.provider.request({
+                method: 'hardhat_impersonateAccount',
+                params: [unauthorized],
+            });
+            const badSigner = await ethers.getSigner(unauthorized);
+            const badNft = nft.connect(badSigner);
+            //await badNft.mint(unauthorized, 9004, "ipfs://fail");
+            await badNft.mint(1);
+            setTestResult(row, "Test4", "FAIL")
+            console.log(`❌ Unauthorized mint should have failed for ${address}`);
+        } catch (err) {
+            console.log(`✅ Unauthorized mint blocked for ${address}:`, err.message);
+            setTestResult(row, "Test4", "PASS")
+        }
+
+        // === TEST 5: Transfer from unauthorized address (caller is not the owner of the token)
+        try {
+            const recipient = '0x29469395eAf6f95920E59F858042f0e28D98a20B'; // Example: replace with a valid recipient address
+            console.log(`Testing ${address} - Transfer from unauthorized address...`);
+            await network.provider.request({
+                method: 'hardhat_impersonateAccount',
+                params: [recipient],
+            });
+            const badSigner = await ethers.getSigner(recipient);
+            const badNft = nft.connect(badSigner);
+            await badNft.transferFrom(signer.address, recipient, 9001);  // Attempt to transfer tokenId 9001
+            setTestResult(row, "Test5", "FAIL")
+            console.log(`❌ Transfer from unauthorized address should have failed for ${address}`);
+        } catch (err) {
+            console.log(`✅ Transfer from unauthorized address blocked for ${address}:`, err.message);
+            setTestResult(row, "Test5", "PASS")
+        }
+
+        appendRowToCSV(timestamp, row);
     }
-
-    const signer = await ethers.getSigner(minter);
-
-    // === TEST 1: Minting with empty URI
-    try {
-      console.log(`Testing ${address} - Mint with empty URI...`);
-      await nft.mint(signer.address, 9001, "");  // Adjust minting params as needed
-      setTestResult(row, "Test1", "FAIL")
-    } catch (err) {
-      console.log(`✅ Caught empty URI for ${address}:`, err.message);
-      setTestResult(row, "Test1", "PASS")
-    }
-
-    // === TEST 2: Mint to zero address
-    try {
-      const ZERO = '0x0000000000000000000000000000000000000000';
-      console.log(`Testing ${address} - Mint to zero address...`);
-      await nft.mint(ZERO, 9002, "ipfs://validuri");
-      setTestResult(row, "Test2", "FAIL")
-    } catch (err) {
-      console.log(`✅ Caught zero address for ${address}:`, err.message);
-      setTestResult(row, "Test2", "PASS")
-    }
-
-    // === TEST 3: Duplicate token ID
-    try {
-      console.log(`Testing ${address} - Mint duplicate tokenId...`);
-      await nft.mint(signer.address, 9003, "ipfs://one");
-      await nft.mint(signer.address, 9003, "ipfs://two");  // Duplicate tokenId
-      setTestResult(row, "Test3", "FAIL")
-    } catch (err) {
-      console.log(`✅ Duplicate token ID caught for ${address}:`, err.message);
-      setTestResult(row, "Test3", "PASS")
-    }
-
-    // === TEST 4: Unauthorized mint
-    try {
-      console.log(`Testing ${address} - Unauthorized mint...`);
-      const unauthorized = '0x29469395eAf6f95920E59F858042f0e28D98a20A'; // Example: use a random address or one without minter role
-      await network.provider.request({
-        method: 'hardhat_impersonateAccount',
-        params: [unauthorized],
-      });
-      const badSigner = await ethers.getSigner(unauthorized);
-      const badNft = nft.connect(badSigner);
-      //await badNft.mint(unauthorized, 9004, "ipfs://fail");
-      await badNft.mint(1);
-      setTestResult(row, "Test4", "FAIL")
-    } catch (err) {
-      console.log(`✅ Unauthorized mint blocked for ${address}:`, err.message);
-      setTestResult(row, "Test4", "PASS")
-    }
-
-    // === TEST 5: Transfer from unauthorized address (caller is not the owner of the token)
-    try {
-        const recipient = '0x29469395eAf6f95920E59F858042f0e28D98a20B'; // Example: replace with a valid recipient address
-        console.log(`Testing ${address} - Transfer from unauthorized address...`);
-        await network.provider.request({
-            method: 'hardhat_impersonateAccount',
-            params: [recipient],
-        });
-        const badSigner = await ethers.getSigner(recipient);
-        const badNft = nft.connect(badSigner);
-        await badNft.transferFrom(signer.address, recipient, 9001);  // Attempt to transfer tokenId 9001
-        setTestResult(row, "Test5", "FAIL")
-       console.log(`Transfer from unauthorized address should have failed for ${address}`);
-    } catch (err) {
-        console.log(`✅ Transfer from unauthorized address blocked for ${address}:`, err.message);
-        setTestResult(row, "Test5", "PASS")
-    }
-
-    appendRowToCSV(timestamp, row);
-  }
 }
 
 
 function createOutputCSV(timestamp) {
-  const headers = ['Address', 'Test1', 'Test2', 'Test3', 'Test4', 'Test5'];
-  const csvData = headers.join(',');
-  const outputDir = path.resolve(__dirname, '../output');
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true });
-  }
+    const headers = ['Address', 'Test1', 'Test2', 'Test3', 'Test4', 'Test5'];
+    const csvData = headers.join(',');
+    const outputDir = path.resolve(__dirname, '../output');
+    if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir, {recursive: true});
+    }
 
-  const filename = path.join(outputDir, `data-${timestamp}.csv`);
-  fs.writeFileSync(filename, csvData + '\n');
+    const filename = path.join(outputDir, `data-${timestamp}.csv`);
+    fs.writeFileSync(filename, csvData + '\n');
 }
 
 function buildRow(address) {
-  return {
-    Address: address,
-    Test1: '',
-    Test2: '',
-    Test3: '',
-    Test4: '',
-    Test5: '',
-  };
+    return {
+        Address: address,
+        Test1: '',
+        Test2: '',
+        Test3: '',
+        Test4: '',
+        Test5: '',
+    };
 }
 
 function setTestResult(row, testName, value) {
-  if (!(testName in row)) {
-    console.error(`Invalid test name: ${testName}`);
-    return;
-  }
-  row[testName] = value;
+    if (!(testName in row)) {
+        console.error(`Invalid test name: ${testName}`);
+        return;
+    }
+    row[testName] = value;
 }
 
 function appendRowToCSV(timestamp, row) {
-  const outputDir = path.resolve(__dirname, '../output');
-  const filename = path.join(outputDir, `data-${timestamp}.csv`);
-  const values = [
-    row.Address,
-    row.Test1,
-    row.Test2,
-    row.Test3,
-    row.Test4,
-    row.Test5,
-  ];
-  fs.appendFileSync(filename, values.join(',') + '\n');
+    const outputDir = path.resolve(__dirname, '../output');
+    const filename = path.join(outputDir, `data-${timestamp}.csv`);
+    const values = [
+        row.Address,
+        row.Test1,
+        row.Test2,
+        row.Test3,
+        row.Test4,
+        row.Test5,
+    ];
+    fs.appendFileSync(filename, values.join(',') + '\n');
 }
 
 function getTimestamp() {
-  return new Date().toISOString().replace(/[:.]/g, '-');
+    return new Date().toISOString().replace(/[:.]/g, '-');
 }
 
 main().catch(console.error);
