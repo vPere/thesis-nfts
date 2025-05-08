@@ -220,6 +220,11 @@ async function main() {
                 method: 'hardhat_impersonateAccount',
                 params: [recipient],
             });
+            const funder = (await ethers.getSigners())[0]; // default account with ETH
+            await funder.sendTransaction({
+                to: recipient,
+                value: ethers.utils.parseEther("1.0"), // send 1 ETH
+            });
             const badSigner = await ethers.getSigner(recipient);
             const badNft = nft.connect(badSigner);
             await badNft.transferFrom(signer.address, recipient, 9001);  // Attempt to transfer tokenId 9001
