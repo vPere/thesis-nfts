@@ -63,7 +63,7 @@ async function main() {
     }
 
     // === TEST 4: Unauthorized mint
-    const unauthorized = '0xAnotherAddress'; // Example: use a random address or one without minter role
+    const unauthorized = '0x29469395eAf6f95920E59F858042f0e28D98a20A'; // Example: use a random address or one without minter role
     await network.provider.request({
       method: 'hardhat_impersonateAccount',
       params: [unauthorized],
