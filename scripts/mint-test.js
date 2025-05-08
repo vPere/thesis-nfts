@@ -18,7 +18,8 @@ async function main() {
         const nft = new ethers.Contract(address, abi, ethers.provider);
 
         // Impersonate a known privileged address (e.g., minter)
-        const minter = '0x01DAFd77d7FBECa647Acb78B45bCf60bAc8dA757'; // Example: replace with a known minter address
+        //const minter = '0x01DAFd77d7FBECa647Acb78B45bCf60bAc8dA757'; // Example: replace with a known minter address
+        const minter = '0x01Dahdkjadnjfshdalksndkjdsflkcnkjb6'; // Example: replace with a known minter address
         try {
             await network.provider.request({
                 method: 'hardhat_impersonateAccount',
