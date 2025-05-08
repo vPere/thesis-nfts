@@ -27,6 +27,11 @@ async function main() {
             });
             const signer = await ethers.getSigner(minter);
             console.log("Impersonation OK");
+            const funder = (await ethers.getSigners())[0]; // default account with ETH
+            await funder.sendTransaction({
+                to: minter,
+                value: ethers.utils.parseEther("1.0"), // send 1 ETH
+            });
 
             if (nft.mint) {
                 try {
