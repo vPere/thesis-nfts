@@ -214,7 +214,7 @@ async function main() {
 
         // === TEST 5: Transfer from unauthorized address (caller is not the owner of the token)
         try {
-            const recipient = '0x29469395eAf6f95920E59F858042f0e28D98a20B'; // Example: replace with a valid recipient address
+            const recipient = '0x1111111111111111111111111111111111111111'; // Example: replace with a valid recipient address
             console.log(`Testing ${address} - Transfer from unauthorized address...`);
             await network.provider.request({
                 method: 'hardhat_impersonateAccount',
