@@ -2,6 +2,7 @@
 
 const { ethers, network } = require("hardhat");
 const fs = require("fs");
+const path = require('path');
 
 // List of contract addresses to test
 const contractAddresses = [
@@ -11,8 +12,15 @@ const contractAddresses = [
 ];
 
 async function main() {
+  // Create the output CSV file for this execution
+  const timestamp = getTimestamp();
+  createOutputCSV(timestamp);
+
   // Loop through each contract address
   for (const address of contractAddresses) {
+
+    const row = buildRow(address);
+
     const abi = JSON.parse(fs.readFileSync(`abis/${address}.json`, 'utf8'));
     
     const nft = new ethers.Contract(address, abi, ethers.provider);
@@ -40,8 +48,10 @@ async function main() {
     try {
       console.log(`Testing ${address} - Mint with empty URI...`);
       await nft.mint(signer.address, 9001, "");  // Adjust minting params as needed
+      setTestResult(row, "Test1", "FAIL")
     } catch (err) {
       console.log(`✅ Caught empty URI for ${address}:`, err.message);
+      setTestResult(row, "Test1", "PASS")
     }
 
     // === TEST 2: Mint to zero address
@@ -49,8 +59,10 @@ async function main() {
       const ZERO = '0x0000000000000000000000000000000000000000';
       console.log(`Testing ${address} - Mint to zero address...`);
       await nft.mint(ZERO, 9002, "ipfs://validuri");
+      setTestResult(row, "Test2", "FAIL")
     } catch (err) {
       console.log(`✅ Caught zero address for ${address}:`, err.message);
+      setTestResult(row, "Test2", "PASS")
     }
 
     // === TEST 3: Duplicate token ID
@@ -58,8 +70,10 @@ async function main() {
       console.log(`Testing ${address} - Mint duplicate tokenId...`);
       await nft.mint(signer.address, 9003, "ipfs://one");
       await nft.mint(signer.address, 9003, "ipfs://two");  // Duplicate tokenId
+      setTestResult(row, "Test3", "FAIL")
     } catch (err) {
       console.log(`✅ Duplicate token ID caught for ${address}:`, err.message);
+      setTestResult(row, "Test3", "PASS")
     }
 
     // === TEST 4: Unauthorized mint
@@ -74,10 +88,62 @@ async function main() {
       const badNft = nft.connect(badSigner);
       //await badNft.mint(unauthorized, 9004, "ipfs://fail");
       await badNft.mint(1);
+      setTestResult(row, "Test4", "FAIL")
     } catch (err) {
       console.log(`✅ Unauthorized mint blocked for ${address}:`, err.message);
+      setTestResult(row, "Test4", "PASS")
     }
+
+    appendRowToCSV(timestamp, row);
   }
+}
+
+
+function createOutputCSV(timestamp) {
+  const headers = ['Address', 'Test1', 'Test2', 'Test3', 'Test4'];
+  const csvData = headers.join(',');
+  const outputDir = path.resolve(__dirname, '../output');
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+
+  const filename = path.join(outputDir, `data-${timestamp}.csv`);
+  fs.writeFileSync(filename, csvData + '\n');
+}
+
+function buildRow(address) {
+  return {
+    Address: address,
+    Test1: '',
+    Test2: '',
+    Test3: '',
+    Test4: ''
+  };
+}
+
+function setTestResult(row, testName, value) {
+  if (!(testName in row)) {
+    console.error(`Invalid test name: ${testName}`);
+    return;
+  }
+  row[testName] = value;
+}
+
+function appendRowToCSV(timestamp, row) {
+  const outputDir = path.resolve(__dirname, '../output');
+  const filename = path.join(outputDir, `data-${timestamp}.csv`);
+  const values = [
+    row.Address,
+    row.Test1,
+    row.Test2,
+    row.Test3,
+    row.Test4,
+  ];
+  fs.appendFileSync(filename, values.join(',') + '\n');
+}
+
+function getTimestamp() {
+  return new Date().toISOString().replace(/[:.]/g, '-');
 }
 
 main().catch(console.error);
