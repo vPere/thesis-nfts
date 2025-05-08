@@ -26,7 +26,18 @@ async function main() {
                 params: [minter],
             });
             const signer = await ethers.getSigner(minter);
-            console.log("OK");
+            console.log("Impersonation OK");
+
+            if (nft.mint) {
+                try {
+                    const tx = await nft.connect(signer).mint(minter, 9999, "ipfs://example-uri");
+                    console.log("Mint tx sent:", tx.hash);
+                } catch (mintErr) {
+                    console.log("Mint failed:", mintErr.message);
+                }
+            } else {
+                console.log("No public mint function found in ABI.");
+            }
         } catch (e) {
             console.log(`Error: ${e.message}`);
         }
