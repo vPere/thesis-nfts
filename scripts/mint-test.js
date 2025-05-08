@@ -30,7 +30,7 @@ async function main() {
 
             if (nft.mint) {
                 try {
-                    const tx = await nft.connect(signer).mint(minter, 9999, "ipfs://example-uri");
+                    const tx = await nft.connect(signer).mint(1);
                     console.log("Mint tx sent:", tx.hash);
                 } catch (mintErr) {
                     console.log("Mint failed:", mintErr.message);
