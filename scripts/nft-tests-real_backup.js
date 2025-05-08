@@ -208,13 +208,31 @@ async function main() {
       setTestResult(row, "Test4", "PASS")
     }
 
+    // === TEST 5: Transfer from unauthorized address (caller is not the owner of the token)
+    try {
+        const recipient = '0x29469395eAf6f95920E59F858042f0e28D98a20B'; // Example: replace with a valid recipient address
+        console.log(`Testing ${address} - Transfer from unauthorized address...`);
+        await network.provider.request({
+            method: 'hardhat_impersonateAccount',
+            params: [recipient],
+        });
+        const badSigner = await ethers.getSigner(recipient);
+        const badNft = nft.connect(badSigner);
+        await badNft.transferFrom(signer.address, recipient, 9001);  // Attempt to transfer tokenId 9001
+        setTestResult(row, "Test5", "FAIL")
+       console.log(`Transfer from unauthorized address should have failed for ${address}`);
+    } catch (err) {
+        console.log(`✅ Transfer from unauthorized address blocked for ${address}:`, err.message);
+        setTestResult(row, "Test5", "PASS")
+    }
+
     appendRowToCSV(timestamp, row);
   }
 }
 
 
 function createOutputCSV(timestamp) {
-  const headers = ['Address', 'Test1', 'Test2', 'Test3', 'Test4'];
+  const headers = ['Address', 'Test1', 'Test2', 'Test3', 'Test4', 'Test5'];
   const csvData = headers.join(',');
   const outputDir = path.resolve(__dirname, '../output');
   if (!fs.existsSync(outputDir)) {
@@ -231,7 +249,8 @@ function buildRow(address) {
     Test1: '',
     Test2: '',
     Test3: '',
-    Test4: ''
+    Test4: '',
+    Test5: '',
   };
 }
 
@@ -252,6 +271,7 @@ function appendRowToCSV(timestamp, row) {
     row.Test2,
     row.Test3,
     row.Test4,
+    row.Test5,
   ];
   fs.appendFileSync(filename, values.join(',') + '\n');
 }
