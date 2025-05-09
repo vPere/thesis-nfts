@@ -10,7 +10,7 @@ const {
     appendRowToCSV,
     createOutputCSV,
     getTimestamp
-} = require("./csvHandler");
+} = require("../scripts/csvHandler");
 
 describe("NFT Vulnerability Tests", function () {
     const timestamp = getTimestamp();

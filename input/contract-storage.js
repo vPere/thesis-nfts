@@ -114,8 +114,10 @@ const contractAddresses = [
     '0x8881C19665BBF8FA0677900d0E6C689e71bd8db7',
     '0xF23270e58A3F4e275751924476E145D51e0FC96c',
 
-    // Vulnerable one (in theory):
-    '0xf3821adaceb6500c0a202971aecf840a033f236b',
+    //educational ones
+    '0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec',
+    '0x5c007a1d8051dfda60b3692008b9e10731b67fde',
+    '0x130dc43898eb2a52c9d11043a581ce4414487ed0',
 ];
 
 function getContractAddresses() {
