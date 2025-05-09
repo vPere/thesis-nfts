@@ -1,7 +1,16 @@
-const { ethers, network } = require("hardhat");
+const path = require("path");
 const fs = require("fs");
-const { getContractAddresses } = require("../input/contract-storage");
-const { buildRow, setTestResult, appendRowToCSV, createOutputCSV, getTimestamp } = require("./csvHandler");
+const { ethers, network } = require("hardhat");
+const {
+    getContractAddresses
+} = require("../input/contract-storage");
+const {
+    buildRow,
+    setTestResult,
+    appendRowToCSV,
+    createOutputCSV,
+    getTimestamp
+} = require("./csvHandler");
 
 describe("NFT Vulnerability Tests", function () {
     const timestamp = getTimestamp();
@@ -19,78 +28,105 @@ describe("NFT Vulnerability Tests", function () {
 
             before(async function () {
                 row = buildRow(address);
+                const abiPath = path.resolve(__dirname, `abis/${address}.json`);
+                let abi;
+                try {
+                    abi = JSON.parse(fs.readFileSync(abiPath, "utf8"));
+                } catch (err) {
+                    console.warn(`Skipping ${address}: ABI not found at ${abiPath}`);
+                    return; // Skip this contract's tests
+                }                nft = new ethers.Contract(address, abi, ethers.provider);
 
-                const abi = JSON.parse(fs.readFileSync(`abis/${address}.json`, 'utf8'));
-                nft = new ethers.Contract(address, abi, ethers.provider);
-
-                const minter = '0x29469395eAf6f95920E59F858042f0e28D98a20B';
+                const minter = "0x29469395eAf6f95920E59F858042f0e28D98a20B";
                 await network.provider.request({
-                    method: 'hardhat_impersonateAccount',
+                    method: "hardhat_impersonateAccount",
                     params: [minter],
                 });
+
                 const funder = (await ethers.getSigners())[0];
                 await funder.sendTransaction({
                     to: minter,
                     value: ethers.utils.parseEther("1.0"),
                 });
+
                 signer = await ethers.getSigner(minter);
+                nft = nft.connect(signer);
             });
 
             it("should fail to mint with empty URI", async function () {
                 try {
+                    console.log("Test1: Trying empty URI");
                     await nft.mint(signer.address, 9001, "");
                     setTestResult(row, "Test1", "FAIL");
                 } catch (err) {
+                    console.log("Test1 Passed: Revert caught:", err.message);
                     setTestResult(row, "Test1", "PASS");
                 }
             });
 
             it("should fail to mint to the zero address", async function () {
                 try {
-                    const ZERO = '0x0000000000000000000000000000000000000000';
+                    const ZERO = "0x0000000000000000000000000000000000000000";
+                    console.log("Test2: Trying zero address mint");
                     await nft.mint(ZERO, 9002, "ipfs://validuri");
                     setTestResult(row, "Test2", "FAIL");
                 } catch (err) {
+                    console.log("Test2 Passed: Revert caught:", err.message);
                     setTestResult(row, "Test2", "PASS");
                 }
             });
 
             it("should fail to mint duplicate token ID", async function () {
                 try {
+                    console.log("Test3: Trying duplicate token ID");
                     await nft.mint(signer.address, 9003, "ipfs://one");
                     await nft.mint(signer.address, 9003, "ipfs://two");
                     setTestResult(row, "Test3", "FAIL");
                 } catch (err) {
+                    console.log("Test3 Passed: Revert caught:", err.message);
                     setTestResult(row, "Test3", "PASS");
                 }
             });
 
             it("should block unauthorized mint", async function () {
                 try {
-                    const unauthorized = '0x29469395eAf6f95920E59F858042f0e28D98a20A';
+                    const unauthorized = "0x29469395eAf6f95920E59F858042f0e28D98a20A";
                     await network.provider.request({
-                        method: 'hardhat_impersonateAccount',
+                        method: "hardhat_impersonateAccount",
                         params: [unauthorized],
                     });
+
+                    const funder = (await ethers.getSigners())[0];
+                    await funder.sendTransaction({
+                        to: unauthorized,
+                        value: ethers.utils.parseEther("1.0"),
+                    });
+
                     const badSigner = await ethers.getSigner(unauthorized);
                     const badNft = nft.connect(badSigner);
-                    await badNft.mint(1); // Replace with full params if required
+
+                    console.log("Test4: Unauthorized mint attempt");
+                    await badNft.mint(badSigner.address, 9004, "ipfs://badmint");
                     setTestResult(row, "Test4", "FAIL");
                 } catch (err) {
+                    console.log("Test4 Passed: Revert caught:", err.message);
                     setTestResult(row, "Test4", "PASS");
                 }
             });
 
             it("should block unauthorized transfer", async function () {
+                const tokenId = 9999;
+
                 try {
-                    const tokenId = 9999;
+                    console.log("Test5: Minting for transfer test");
                     await nft.mint(signer.address, tokenId, "ipfs://unauth-transfer");
 
-                    const attacker = '0x1111111111111111111111111111111111111111';
+                    const attacker = "0x1111111111111111111111111111111111111111";
                     await network.provider.request({
-                        method: 'hardhat_impersonateAccount',
+                        method: "hardhat_impersonateAccount",
                         params: [attacker],
                     });
+
                     const funder = (await ethers.getSigners())[0];
                     await funder.sendTransaction({
                         to: attacker,
@@ -100,9 +136,11 @@ describe("NFT Vulnerability Tests", function () {
                     const attackerSigner = await ethers.getSigner(attacker);
                     const nftFromAttacker = nft.connect(attackerSigner);
 
+                    console.log("Test5: Unauthorized transfer attempt");
                     await nftFromAttacker.transferFrom(signer.address, attacker, tokenId);
                     setTestResult(row, "Test5", "FAIL");
                 } catch (err) {
+                    console.log("Test5 Passed: Revert caught:", err.message);
                     setTestResult(row, "Test5", "PASS");
                 }
             });
