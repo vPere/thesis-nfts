@@ -1,7 +1,13 @@
 const {ethers, network} = require("hardhat");
 const fs = require("fs");
-const path = require('path');
 const {getContractAddresses} = require("../input/contract-storage");
+const {
+    buildRow,
+    setTestResult,
+    appendRowToCSV,
+    createOutputCSV,
+    getTimestamp
+} = require("./csvHandler");
 
 async function main() {
     // Create the output CSV file for this execution
@@ -152,55 +158,4 @@ async function main() {
         appendRowToCSV(timestamp, row);
     }
 }
-
-
-function createOutputCSV(timestamp) {
-    const headers = ['Address', 'Test1', 'Test2', 'Test3', 'Test4', 'Test5'];
-    const csvData = headers.join(',');
-    const outputDir = path.resolve(__dirname, '../output');
-    if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir, {recursive: true});
-    }
-
-    const filename = path.join(outputDir, `data-${timestamp}.csv`);
-    fs.writeFileSync(filename, csvData + '\n');
-}
-
-function buildRow(address) {
-    return {
-        Address: address,
-        Test1: '',
-        Test2: '',
-        Test3: '',
-        Test4: '',
-        Test5: '',
-    };
-}
-
-function setTestResult(row, testName, value) {
-    if (!(testName in row)) {
-        console.error(`Invalid test name: ${testName}`);
-        return;
-    }
-    row[testName] = value;
-}
-
-function appendRowToCSV(timestamp, row) {
-    const outputDir = path.resolve(__dirname, '../output');
-    const filename = path.join(outputDir, `data-${timestamp}.csv`);
-    const values = [
-        row.Address,
-        row.Test1,
-        row.Test2,
-        row.Test3,
-        row.Test4,
-        row.Test5,
-    ];
-    fs.appendFileSync(filename, values.join(',') + '\n');
-}
-
-function getTimestamp() {
-    return new Date().toISOString().replace(/[:.]/g, '-');
-}
-
 main().catch(console.error);
