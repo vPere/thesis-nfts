@@ -1,13 +1,12 @@
 const {ethers, network} = require("hardhat");
 const fs = require("fs");
 const {getContractAddresses} = require("../input/contract-storage");
-const {AbiHelper} = require("../scripts/abiHelper");
-const {address} = require("hardhat/internal/core/config/config-validation");
 const CsvHelper = require("../scripts/csvHelper");
 const {runBalanceOfTests} = require("./balanceOfTests");
 const {runOwnerOfTests} = require("./ownerOfTests");
 const {runTransferFromTests} = require("./trasferFromTests");
 const {runSafeTransferFromTests} = require("./saveTransferFromTests");
+const {LOAD_ABI_FILES, GET_ABI_FILE} = require("../scripts/abiHelper");
 
 async function main() {
 //from here we'll call all the specific tests for each ERC-721 method.
@@ -15,9 +14,9 @@ async function main() {
     //load list of contract addresses
     const contractAddresses = getContractAddresses();
     //load the ABI files for each contract address
-    const abiHelper = new AbiHelper(contractAddresses);
-    for (address of contractAddresses) {
-        const abiFile = abiHelper.getAbiFile(address);
+    await LOAD_ABI_FILES(contractAddresses);
+    for (const address of contractAddresses) {
+        const abiFile = GET_ABI_FILE(address);
 
         if (abiFile === "0") {
             console.log("❌ Unable to find abi file for: " + address + "skipping address...");

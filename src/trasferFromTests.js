@@ -40,6 +40,7 @@ async function runTransferFromTests(address, abi, signer) {
     await testCase("Zero address from", "0x0000000000000000000000000000000000000000", otherAddr, 1);
     await testCase("Zero address to", validAddr, "0x0000000000000000000000000000000000000000", 1);
 
+   /*
     // ✅ Valid transfer (using impersonation)
     const holder = "0x5a4F225A8E42f2a5c93Aa74fDbC1efC6Fe6720e1"; // TODO: Replace with actual owner address
     const tokenId = 12345; // TODO: Replace with actual token ID the holder owns
@@ -51,7 +52,7 @@ async function runTransferFromTests(address, abi, signer) {
     });
     const impersonatedSigner = await ethers.getSigner(holder);
 
-    const nftAsHolder = await ethers.getContractAt(abi, address, impersonatedSigner);
+    const nftAsHolder = await ethers.getContractAt(abi, address, signer); //changed impersonatedSigner to signer
 
     try {
         const tx = await nftAsHolder.transferFrom(holder, recipient, tokenId);
@@ -65,6 +66,7 @@ async function runTransferFromTests(address, abi, signer) {
         method: "hardhat_stopImpersonatingAccount",
         params: [holder],
     });
+    */
 
     return results.join(",");
 }

@@ -4,30 +4,26 @@ const fs = require('fs');
 
 class AbiHelper {
   static ETHERSCAN_API_KEY = '9HG2298MKSCN6THHD3JQW2M83KNXNMWQTV'; // Replace with your API key
-  static ABI_DIR = ''; // Directory where ABI files are stored
+  static ABI_DIR = 'tmp/'; // Directory where ABI files are stored
 
-    async constructor(contractAddresses) {
-      await this.init(contractAddresses);
-    }
-
-  async init(contractAddresses) {
+  static async LOAD_ABI_FILES(contractAddresses) {
     const abis = {};
     for (let address of contractAddresses) {
-        if (this.abiFileExists(address)) {
+        if (AbiHelper.ABI_FILE_EXISTS(address)) {
             console.log(`✅ ABI for ${address} already exists. Skipping...`);
         } else {
-          const abi = await this.fetchABI(address);
+          const abi = await AbiHelper.FETCH_ABI(address);
           if (abi) {
             abis[address] = abi;
-            fs.writeFileSync(abiHelper.ABI_DIR + `${address}.json`, JSON.stringify(abi, null, 2));
+            fs.writeFileSync(AbiHelper.ABI_DIR + `${address}.json`, JSON.stringify(abi, null, 2));
             console.log(`✅ Saved ABI for ${address}`);
           }
         }
     }
   }
 
-  async fetchABI(address) {
-    const url = `https://api.etherscan.io/api?module=contract&action=getabi&address=${address}&apikey=${etherscanApiKey}`;
+  static async FETCH_ABI(address) {
+    const url = `https://api.etherscan.io/api?module=contract&action=getabi&address=${address}&apikey=${AbiHelper.ETHERSCAN_API_KEY}`;
     try {
       const response = await axios.get(url);
       if (response.data.status === "1") {
@@ -42,16 +38,15 @@ class AbiHelper {
     }
   }
 
-  abiFileExists(address) {
-    return fs.existsSync(`${(abiHelper.ABI_DIR)}${address}.json`);
+  static ABI_FILE_EXISTS(address) {
+    return fs.existsSync(`${(AbiHelper.ABI_DIR)}${address}.json`);
   }
 
-  //function that returns the requested abi file path
-  getAbiFile(address) {
-      if (!this.abiFileExists(address)) {
+  static GET_ABI_FILE(address) {
+      if (!AbiHelper.ABI_FILE_EXISTS(address)) {
         return "0";
       }
-    return `${(abiHelper.ABI_DIR)}${address}.json`;
+    return `${(AbiHelper.ABI_DIR)}${address}.json`;
   }
 }
 

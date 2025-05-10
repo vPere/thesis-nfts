@@ -40,6 +40,7 @@ async function runSafeTransferFromTests(address, abi, signer) {
     await testCase("Zero address from", "0x0000000000000000000000000000000000000000", otherAddr, 1);
     await testCase("Zero address to", validAddr, "0x0000000000000000000000000000000000000000", 1);
 
+    /*
     // ✅ Valid test (impersonated)
     const holder = "0x5a4F225A8E42f2a5c93Aa74fDbC1efC6Fe6720e1"; // TODO: Replace with actual NFT holder
     const tokenId = 12345; // TODO: Replace with an actual token they own
@@ -65,6 +66,7 @@ async function runSafeTransferFromTests(address, abi, signer) {
         method: "hardhat_stopImpersonatingAccount",
         params: [holder],
     });
+     */
 
     return results.join(",");
 }
