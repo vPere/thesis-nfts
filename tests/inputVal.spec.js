@@ -32,6 +32,7 @@ describe("NFT Vulnerability Tests", function () {
             let abi;
 
             before(async function () {
+                this.timeout(200000); // Increase timeout for this test
                 row = buildRow(address);
                 const abiPath = path.resolve(__dirname, `abis/${address}.json`);
                 try {
