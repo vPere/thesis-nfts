@@ -6,7 +6,9 @@ async function runSafeTransferFromTests(address, abi, signer) {
 
     async function testCase(name, from, to, tokenId, expectSuccess = false) {
         try {
-            const tx = await nft["safeTransferFrom(address,address,uint256)"](from, to, tokenId);
+            const tx = await nft["safeTransferFrom(address,address,uint256)"](from, to, tokenId, {
+                gasLimit: 1000000,
+            });
             if (expectSuccess) {
                 await tx.wait();
                 results.push('"PASS"');

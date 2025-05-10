@@ -42,8 +42,8 @@ async function main() {
         const transferFromResults = await runTransferFromTests(address, abi, signer);
         contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, transferFromResults);
         // Call Tests on safeTransferFrom
-        const saveTransferFromResults = await runSafeTransferFromTests(address, abi, signer);
-        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, saveTransferFromResults);
+        const safeTransferFromResults = await runSafeTransferFromTests(address, abi, signer);
+        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, safeTransferFromResults);
         // TODO: Call Tests on approve
         // TODO: Call Tests on setApprovalForAll
         // TODO: Call Tests on getApproved
