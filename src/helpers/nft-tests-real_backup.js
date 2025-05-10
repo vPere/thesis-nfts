@@ -1,6 +1,6 @@
 const {ethers, network} = require("hardhat");
 const fs = require("fs");
-const {getContractAddresses} = require("../input/contract-storage");
+const {getContractAddresses} = require("../../input/contract-storage");
 const {
     buildRow,
     setTestResult,

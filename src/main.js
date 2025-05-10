@@ -1,12 +1,12 @@
 const {ethers, network} = require("hardhat");
 const fs = require("fs");
 const {getContractAddresses} = require("../input/contract-storage");
-const CsvHelper = require("../scripts/csvHelper");
-const {runBalanceOfTests} = require("./balanceOfTests");
-const {runOwnerOfTests} = require("./ownerOfTests");
-const {runTransferFromTests} = require("./trasferFromTests");
-const {runSafeTransferFromTests} = require("./saveTransferFromTests");
-const {LOAD_ABI_FILES, GET_ABI_FILE} = require("../scripts/abiHelper");
+const CsvHelper = require("./helpers/csvHelper");
+const {runBalanceOfTests} = require("./tests/balanceOfTests");
+const {runOwnerOfTests} = require("./tests/ownerOfTests");
+const {runTransferFromTests} = require("./tests/trasferFromTests");
+const {runSafeTransferFromTests} = require("./tests/saveTransferFromTests");
+const {LOAD_ABI_FILES, GET_ABI_FILE} = require("./helpers/abiHelper");
 
 async function main() {
 //from here we'll call all the specific tests for each ERC-721 method.
@@ -83,4 +83,4 @@ function outputSetup() {
     return filename;
 }
 
-main();
+await main();

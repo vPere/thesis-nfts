@@ -35,7 +35,7 @@ class CsvHelper {
     }
 
     createOutputCSV(timestamp) {
-        const headers = ['Address', 'Test1', 'Test2', 'Test3', 'Test4', 'Test5', 'Test6'];
+        const headers = ['Address', 'Test1', 'Test2', 'Test3', 'Test4', 'Test5', 'Test6']; //TODO: add proper headers (for all tests)
         const csvData = headers.join(',');
         const outputDir = path.resolve(__dirname, '../output');
         if (!fs.existsSync(outputDir)) {

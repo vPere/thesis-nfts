@@ -10,8 +10,8 @@ const {
     appendRowToCSV,
     createOutputCSV,
     getTimestamp
-} = require("../scripts/csvHelper");
-const {findValidToken} = require("../scripts/contractOwnerHelper");
+} = require("../src/helpers/csvHelper");
+const {findValidToken} = require("../src/helpers/contractOwnerHelper");
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
