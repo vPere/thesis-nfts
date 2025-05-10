@@ -83,4 +83,4 @@ function outputSetup() {
     return filename;
 }
 
-await main();
+main();
