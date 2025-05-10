@@ -32,7 +32,6 @@ describe("NFT Vulnerability Tests", function () {
             let abi;
 
             before(async function () {
-                this.timeout(200000); // Increase timeout for this test
                 row = buildRow(address);
                 const abiPath = path.resolve(__dirname, `abis/${address}.json`);
                 try {
@@ -57,9 +56,6 @@ describe("NFT Vulnerability Tests", function () {
 
                 signer = await ethers.getSigner(minter);
                 nft = nft.connect(signer);
-                //print an owner and tokenId
-                const { tokenId, owner } = await findValidToken(address, 0, 10000, abi);
-                console.log(`Found valid token: ${tokenId} owned by ${owner}`);
             });
 
             xdescribe("Minting Tests", function () {

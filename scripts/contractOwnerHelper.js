@@ -17,8 +17,30 @@ class ContractOwnerHelper {
             }
         }
 
-        throw new Error("❌ No valid token found in the given range.");
+        throw new Error("❌ No valid token found in the given range. Address: " + nftAddress);
+    }
+
+    // main function to find valid token
+    static async main() {
+        const nftAddress = "0x59325733eb952a92e069C87F0A6168b29E80627f";
+        const start = 8869;
+        const end = 8888;
+
+        const path = require("path");
+        const fs = require("fs");
+
+        const abiPath = path.join(__dirname, "0x59325733eb952a92e069C87F0A6168b29E80627f.json");
+        const abi = JSON.parse(fs.readFileSync(abiPath, "utf8"));
+
+        try {
+            const { tokenId, owner } = await this.findValidToken(nftAddress, start, end, abi);
+            console.log(`✅ Found valid token: ${tokenId} owned by ${owner}`);
+        } catch (error) {
+            console.error(error.message);
+        }
     }
 }
 
 module.exports = ContractOwnerHelper;
+
+ContractOwnerHelper.main();
