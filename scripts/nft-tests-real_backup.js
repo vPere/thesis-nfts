@@ -20,7 +20,7 @@ async function main() {
 
         const row = buildRow(address);
 
-        const abi = JSON.parse(fs.readFileSync(`abis/${address}.json`, 'utf8'));
+        const abi = JSON.parse(fs.readFileSync(`../tests/abis/${address}.json`, 'utf8'));
 
         const nft = new ethers.Contract(address, abi, ethers.provider);
 
