@@ -14,7 +14,6 @@ class ContractOwnerHelper {
                 if (err.message.includes("ERC721: invalid token ID")) {
                     continue;
                 }
-                console.warn(`Error on tokenId ${tokenId}: ${err.message}`);
             }
         }
 
