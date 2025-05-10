@@ -11,6 +11,7 @@ module.exports = {
       forking: {
         url: "https://eth-mainnet.g.alchemy.com/v2/9nMjQEfnED5wUjFHqt7_7PCIz8ofRDN5", // Use your Alchemy API key here
       },
+      loggingEnabled: true,
     },
   },
 };
