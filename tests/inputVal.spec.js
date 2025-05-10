@@ -61,34 +61,34 @@ describe("NFT Vulnerability Tests", function () {
             describe("Minting Tests", function () {
                 it("should fail to mint with empty URI", async function () {
                     try {
-                        console.log("Test1: Trying empty URI");
+                        //console.log("Test1: Trying empty URI");
                         await nft.mint(signer.address, 9001, "");
                         setTestResult(row, "Test1", "FAIL");
                     } catch (err) {
-                        console.log("Test1 Passed: Revert caught:", err.message);
+                        //console.log("Test1 Passed: Revert caught:", err.message);
                         setTestResult(row, "Test1", "PASS");
                     }
                 });
 
                 it("should fail to mint to the zero address", async function () {
                     try {
-                        console.log("Test2: Trying zero address mint");
+                        //console.log("Test2: Trying zero address mint");
                         await nft.mint(ZERO_ADDRESS, 9002, "ipfs://validuri");
                         setTestResult(row, "Test2", "FAIL");
                     } catch (err) {
-                        console.log("Test2 Passed: Revert caught:", err.message);
+                        //console.log("Test2 Passed: Revert caught:", err.message);
                         setTestResult(row, "Test2", "PASS");
                     }
                 });
 
                 it("should fail to mint duplicate token ID", async function () {
                     try {
-                        console.log("Test3: Trying duplicate token ID");
+                        //console.log("Test3: Trying duplicate token ID");
                         await nft.mint(signer.address, 9003, "ipfs://one");
                         await nft.mint(signer.address, 9003, "ipfs://two");
                         setTestResult(row, "Test3", "FAIL");
                     } catch (err) {
-                        console.log("Test3 Passed: Revert caught:", err.message);
+                        //console.log("Test3 Passed: Revert caught:", err.message);
                         setTestResult(row, "Test3", "PASS");
                     }
                 });
@@ -110,21 +110,60 @@ describe("NFT Vulnerability Tests", function () {
                         const badSigner = await ethers.getSigner(unauthorized);
                         const badNft = nft.connect(badSigner);
 
-                        console.log("Test4: Unauthorized mint attempt");
+                        //console.log("Test4: Unauthorized mint attempt");
                         await badNft.mint(badSigner.address, 9004, "ipfs://badmint");
                         setTestResult(row, "Test4", "FAIL");
                     } catch (err) {
-                        console.log("Test4 Passed: Revert caught:", err.message);
+                        //console.log("Test4 Passed: Revert caught:", err.message);
                         setTestResult(row, "Test4", "PASS");
                     }
                 });
             });
             describe("Transfer Tests", function () {
                 //TODO: ownerOf
+                xit("should verify token ownership by transferring the token", async function () {
+                    const { tokenId, owner } = await findValidToken(address, 1, 10000, abi);
+
+                    await network.provider.request({
+                        method: "hardhat_impersonateAccount",
+                        params: [owner],
+                    });
+
+                    const funder = (await ethers.getSigners())[0];
+                    await funder.sendTransaction({
+                        to: owner,
+                        value: ethers.utils.parseEther("1"),
+                    });
+
+                    const impersonatedSigner = await ethers.getSigner(owner);
+                    const nftConnected = nft.connect(impersonatedSigner);
+
+                    const recipient = "0x000000000000000000000000000000000000dead";
+
+                    try {
+                        await nftConnected.transferFrom(owner, recipient, tokenId);
+                        const newOwner = await nft.ownerOf(tokenId);
+
+                        if (newOwner.toLowerCase() === recipient.toLowerCase()) {
+                            console.log(`✅ Ownership verified by transfer. Token ${tokenId} now owned by ${recipient}`);
+                            setTestResult(row, "Test6", "PASS");
+                        } else {
+                            throw new Error("Transfer failed: ownership did not change");
+                        }
+                    } catch (err) {
+                        console.error("❌ Ownership verification failed:", err.message);
+                        setTestResult(row, "Test6", "FAIL");
+                    }
+
+                    await network.provider.request({
+                        method: "hardhat_stopImpersonatingAccount",
+                        params: [owner],
+                    });
+                });
                 it("should block unauthorized transfer", async function () {
                     const tokenId = 9999;
                     try {
-                        console.log("Test5: Minting for transfer test");
+                        //console.log("Test5: Minting for transfer test");
                         await nft.mint(signer.address, tokenId, "ipfs://unauth-transfer");
 
                         const attacker = "0x1111111111111111111111111111111111111111";
@@ -142,11 +181,11 @@ describe("NFT Vulnerability Tests", function () {
                         const attackerSigner = await ethers.getSigner(attacker);
                         const nftFromAttacker = nft.connect(attackerSigner);
 
-                        console.log("Test5: Unauthorized transfer attempt");
+                        //console.log("Test5: Unauthorized transfer attempt");
                         await nftFromAttacker.transferFrom(signer.address, attacker, tokenId);
                         setTestResult(row, "Test5", "FAIL");
                     } catch (err) {
-                        console.log("Test5 Passed: Revert caught:", err.message);
+                        //console.log("Test5 Passed: Revert caught:", err.message);
                         setTestResult(row, "Test5", "PASS");
                     }
                 });

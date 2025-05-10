@@ -6,7 +6,7 @@ class ContractOwnerHelper {
 
         for (let tokenId = start; tokenId < end; tokenId++) {
             try {
-                const owner = await nft.ownerOf(8870);
+                const owner = await nft.ownerOf(tokenId);
                 console.log(`✅ Found: Token ID ${tokenId} is owned by ${owner}`);
                 return { tokenId, owner };
             } catch (err) {
@@ -14,33 +14,12 @@ class ContractOwnerHelper {
                 if (err.message.includes("ERC721: invalid token ID")) {
                     continue;
                 }
+                console.warn(`Error on tokenId ${tokenId}: ${err.message}`);
             }
         }
 
-        throw new Error("❌ No valid token found in the given range. Address: " + nftAddress);
-    }
-
-    // main function to find valid token
-    static async main() {
-        const nftAddress = "0x59325733eb952a92e069C87F0A6168b29E80627f";
-        const start = 0;
-        const end = 2;
-
-        const path = require("path");
-        const fs = require("fs");
-
-        const abiPath = path.join(__dirname, "0x59325733eb952a92e069C87F0A6168b29E80627f.json");
-        const abi = JSON.parse(fs.readFileSync(abiPath, "utf8"));
-
-        try {
-            const { tokenId, owner } = await this.findValidToken(nftAddress, start, end, abi);
-            console.log(`✅ Found valid token: ${tokenId} owned by ${owner}`);
-        } catch (error) {
-            console.error(error.message);
-        }
+        throw new Error("❌ No valid token found in the given range.");
     }
 }
 
 module.exports = ContractOwnerHelper;
-
-ContractOwnerHelper.main();
