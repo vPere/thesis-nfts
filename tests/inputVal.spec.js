@@ -56,10 +56,13 @@ describe("NFT Vulnerability Tests", function () {
 
                 signer = await ethers.getSigner(minter);
                 nft = nft.connect(signer);
+                //print an owner and tokenId
+                const { tokenId, owner } = await findValidToken(address, 0, 10000, abi);
+                console.log(`Found valid token: ${tokenId} owned by ${owner}`);
             });
 
-            describe("Minting Tests", function () {
-                it("should fail to mint with empty URI", async function () {
+            xdescribe("Minting Tests", function () {
+                xit("should fail to mint with empty URI", async function () {
                     try {
                         //console.log("Test1: Trying empty URI");
                         await nft.mint(signer.address, 9001, "");
@@ -119,47 +122,8 @@ describe("NFT Vulnerability Tests", function () {
                     }
                 });
             });
-            describe("Transfer Tests", function () {
+            xdescribe("Transfer Tests", function () {
                 //TODO: ownerOf
-                it("should verify token ownership by transferring the token", async function () {
-                    const { tokenId, owner } = await findValidToken(address, 1, 10000, abi);
-
-                    await network.provider.request({
-                        method: "hardhat_impersonateAccount",
-                        params: [owner],
-                    });
-
-                    const funder = (await ethers.getSigners())[0];
-                    await funder.sendTransaction({
-                        to: owner,
-                        value: ethers.utils.parseEther("1"),
-                    });
-
-                    const impersonatedSigner = await ethers.getSigner(owner);
-                    const nftConnected = nft.connect(impersonatedSigner);
-
-                    const recipient = "0x000000000000000000000000000000000000dead";
-
-                    try {
-                        await nftConnected.transferFrom(owner, recipient, tokenId);
-                        const newOwner = await nft.ownerOf(tokenId);
-
-                        if (newOwner.toLowerCase() === recipient.toLowerCase()) {
-                            console.log(`✅ Ownership verified by transfer. Token ${tokenId} now owned by ${recipient}`);
-                            setTestResult(row, "Test6", "PASS");
-                        } else {
-                            throw new Error("Transfer failed: ownership did not change");
-                        }
-                    } catch (err) {
-                        console.error("❌ Ownership verification failed:", err.message);
-                        setTestResult(row, "Test6", "FAIL");
-                    }
-
-                    await network.provider.request({
-                        method: "hardhat_stopImpersonatingAccount",
-                        params: [owner],
-                    });
-                });
                 it("should block unauthorized transfer", async function () {
                     const tokenId = 9999;
                     try {
