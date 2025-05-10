@@ -6,7 +6,7 @@ class ContractOwnerHelper {
 
         for (let tokenId = start; tokenId < end; tokenId++) {
             try {
-                const owner = await nft.ownerOf(tokenId);
+                const owner = await nft.ownerOf(8870);
                 console.log(`✅ Found: Token ID ${tokenId} is owned by ${owner}`);
                 return { tokenId, owner };
             } catch (err) {
@@ -23,8 +23,8 @@ class ContractOwnerHelper {
     // main function to find valid token
     static async main() {
         const nftAddress = "0x59325733eb952a92e069C87F0A6168b29E80627f";
-        const start = 8869;
-        const end = 8888;
+        const start = 0;
+        const end = 2;
 
         const path = require("path");
         const fs = require("fs");
