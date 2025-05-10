@@ -120,8 +120,8 @@ describe("NFT Vulnerability Tests", function () {
             });
             describe("Transfer Tests", function () {
                 //TODO: ownerOf
-                it("should veryfy token ownership", async function () {
-                    const ownership = await findValidToken(address, 1, 10000);
+                it("should verify token ownership", async function () {
+                    const ownership = await findValidToken(address, 1, 10000, abi);
                     const tokenId = ownership.tokenId;
                     const owner = ownership.owner;
 
