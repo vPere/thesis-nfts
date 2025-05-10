@@ -58,7 +58,7 @@ describe("NFT Vulnerability Tests", function () {
                 nft = nft.connect(signer);
             });
 
-            xdescribe("Minting Tests", function () {
+            describe("Minting Tests", function () {
                 xit("should fail to mint with empty URI", async function () {
                     try {
                         //console.log("Test1: Trying empty URI");
@@ -119,7 +119,7 @@ describe("NFT Vulnerability Tests", function () {
                     }
                 });
             });
-            xdescribe("Transfer Tests", function () {
+            describe("Transfer Tests", function () {
                 //TODO: ownerOf
                 it("should block unauthorized transfer", async function () {
                     const tokenId = 9999;
