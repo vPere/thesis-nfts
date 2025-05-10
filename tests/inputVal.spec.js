@@ -128,11 +128,15 @@ describe("NFT Vulnerability Tests", function () {
 
                     const tokenOwner = await nft.ownerOf(tokenId);
                     console.log(`Token ID ${tokenId} is owned by ${tokenOwner}`);
-                    if (tokenOwner.toLowerCase() === owner.toLowerCase()) {
-                        console.log("Ownership verified");
-                        setTestResult(row, "Test6", "PASS");
-                    } else {
-                        console.log("Ownership verification failed");
+                    try {
+                        if (tokenOwner.toLowerCase() === owner.toLowerCase()) {
+                            console.log("Ownership verified");
+                            setTestResult(row, "Test6", "PASS");
+                        } else {
+                            throw new Error("Token ownership not verified");
+                        }
+                    } catch (err) {
+                        console.error("Error verifying ownership:", err);
                         setTestResult(row, "Test6", "FAIL");
                     }
                 });
