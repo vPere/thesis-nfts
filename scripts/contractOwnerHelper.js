@@ -2,7 +2,7 @@ const { ethers } = require("hardhat");
 
 class ContractOwnerHelper {
     static async findValidToken(nftAddress, start = 0, end = 10000, abi) {
-        const nft = await ethers.getContractAt(abi.abi, nftAddress);
+        const nft = await ethers.getContractAt(abi, nftAddress);
 
         for (let tokenId = start; tokenId < end; tokenId++) {
             try {
