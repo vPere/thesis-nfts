@@ -29,11 +29,11 @@ describe("NFT Vulnerability Tests", function () {
             let row;
             let nft;
             let signer;
+            let abi;
 
             before(async function () {
                 row = buildRow(address);
                 const abiPath = path.resolve(__dirname, `abis/${address}.json`);
-                let abi;
                 try {
                     abi = JSON.parse(fs.readFileSync(abiPath, "utf8"));
                 } catch (err) {
