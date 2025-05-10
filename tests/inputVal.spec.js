@@ -39,7 +39,8 @@ describe("NFT Vulnerability Tests", function () {
                 } catch (err) {
                     console.warn(`Skipping ${address}: ABI not found at ${abiPath}`);
                     return; // Skip this contract's tests
-                }                nft = new ethers.Contract(address, abi, ethers.provider);
+                }
+                nft = new ethers.Contract(address, abi, ethers.provider);
 
                 const minter = "0x29469395eAf6f95920E59F858042f0e28D98a20B";
                 await network.provider.request({

@@ -30,7 +30,7 @@ async function fetchAndSaveABIs() {
     const abi = await fetchABI(address);
     if (abi) {
       abis[address] = abi;
-      fs.writeFileSync(`abis/${address}.json`, JSON.stringify(abi, null, 2));
+      fs.writeFileSync(`../tests/abis/${address}.json`, JSON.stringify(abi, null, 2));
       console.log(`✅ Saved ABI for ${address}`);
     }
   }
