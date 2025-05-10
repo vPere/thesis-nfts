@@ -121,24 +121,44 @@ describe("NFT Vulnerability Tests", function () {
             });
             describe("Transfer Tests", function () {
                 //TODO: ownerOf
-                it("should verify token ownership", async function () {
-                    const ownership = await findValidToken(address, 1, 10000, abi);
-                    const tokenId = ownership.tokenId;
-                    const owner = ownership.owner;
+                it("should verify token ownership by transferring the token", async function () {
+                    const { tokenId, owner } = await findValidToken(address, 1, 10000, abi);
 
-                    const tokenOwner = await nft.ownerOf(tokenId);
-                    console.log(`Token ID ${tokenId} is owned by ${tokenOwner}`);
+                    await network.provider.request({
+                        method: "hardhat_impersonateAccount",
+                        params: [owner],
+                    });
+
+                    const funder = (await ethers.getSigners())[0];
+                    await funder.sendTransaction({
+                        to: owner,
+                        value: ethers.utils.parseEther("1"),
+                    });
+
+                    const impersonatedSigner = await ethers.getSigner(owner);
+                    const nftConnected = nft.connect(impersonatedSigner);
+
+                    const recipient = "0x000000000000000000000000000000000000dead";
+
                     try {
-                        if (tokenOwner.toLowerCase() === owner.toLowerCase()) {
-                            console.log("Ownership verified");
+                        await nftConnected.transferFrom(owner, recipient, tokenId);
+                        const newOwner = await nft.ownerOf(tokenId);
+
+                        if (newOwner.toLowerCase() === recipient.toLowerCase()) {
+                            console.log(`✅ Ownership verified by transfer. Token ${tokenId} now owned by ${recipient}`);
                             setTestResult(row, "Test6", "PASS");
                         } else {
-                            throw new Error("Token ownership not verified");
+                            throw new Error("Transfer failed: ownership did not change");
                         }
                     } catch (err) {
-                        console.error("Error verifying ownership:", err);
+                        console.error("❌ Ownership verification failed:", err.message);
                         setTestResult(row, "Test6", "FAIL");
                     }
+
+                    await network.provider.request({
+                        method: "hardhat_stopImpersonatingAccount",
+                        params: [owner],
+                    });
                 });
                 it("should block unauthorized transfer", async function () {
                     const tokenId = 9999;
