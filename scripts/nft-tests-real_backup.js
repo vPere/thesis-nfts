@@ -7,7 +7,7 @@ const {
     appendRowToCSV,
     createOutputCSV,
     getTimestamp
-} = require("./csvHandler");
+} = require("./csvHelper");
 
 async function main() {
     // Create the output CSV file for this execution

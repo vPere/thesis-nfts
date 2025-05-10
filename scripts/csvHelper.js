@@ -1,20 +1,32 @@
 const fs = require('fs');
 const path = require("path");
-class CSVHandler {
+class CsvHelper {
 
-    static buildRow(address) {
+    constructor() {
+        this.timestamp = this.getTimestamp();
+    }
+
+    static BUILD_ROW(address) {
         return {
         Address: address,
-        Test1: '',
-        Test2: '',
-        Test3: '',
-        Test4: '',
-        Test5: '',
-        Test6: ''
         };
     }
 
-    static setTestResult(row, testName, value) {
+    static APPEND_RESULT_TO_ROW(allResultsRow, methodResultsString) {
+        const methodResults = methodResultsString.split(',');
+        methodResults.forEach((result) => {
+            const testName = `Test${Object.keys(allResultsRow).length + 1}`;
+            allResultsRow[testName] = result;
+        });
+        return allResultsRow;
+    }
+
+    static APPEND_ROW_TO_CSV(file, csvRow) {
+        const csvData = Object.values(csvRow).join(',');
+        fs.appendFileSync(file, csvData + '\n');
+    }
+
+    setTestResult(row, testName, value) {
         if (!(testName in row)) {
         console.error(`Invalid test name: ${testName}`);
         return;
@@ -22,22 +34,7 @@ class CSVHandler {
         row[testName] = value;
     }
 
-    static appendRowToCSV(row, timestamp) {
-        const outputDir = path.resolve(__dirname, '../output');
-        const filename = path.join(outputDir, `data-${timestamp}.csv`);
-        const values = [
-            row.Address,
-            row.Test1,
-            row.Test2,
-            row.Test3,
-            row.Test4,
-            row.Test5,
-            row.Test6
-        ];
-        fs.appendFileSync(filename, values.join(',') + '\n');
-    }
-
-    static createOutputCSV(timestamp) {
+    createOutputCSV(timestamp) {
         const headers = ['Address', 'Test1', 'Test2', 'Test3', 'Test4', 'Test5', 'Test6'];
         const csvData = headers.join(',');
         const outputDir = path.resolve(__dirname, '../output');
@@ -47,10 +44,12 @@ class CSVHandler {
 
         const filename = path.join(outputDir, `data-${timestamp}.csv`);
         fs.writeFileSync(filename, csvData + '\n');
+
+        return filename;
     }
-    static getTimestamp() {
+    getTimestamp() {
         return new Date().toISOString().replace(/[:.]/g, '-');
     }
 }
 
-module.exports = CSVHandler;
+module.exports = CsvHelper;

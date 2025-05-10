@@ -1,0 +1,40 @@
+const { ethers } = require("hardhat");
+
+async function runOwnerOfTests(address, abi, signer) {
+    const nft = await ethers.getContractAt(abi, address, signer);
+    const results = [];
+
+    async function testCase(name, input, expectSuccess = false) {
+        try {
+            await nft.ownerOf(input);
+            if (expectSuccess) {
+                results.push('"PASS"');
+            } else {
+                results.push('"FAIL"'); // unexpected success
+            }
+        } catch (err) {
+            if (expectSuccess) {
+                results.push('"FAIL"'); // unexpected error
+            } else {
+                results.push('"PASS"');
+            }
+        }
+    }
+
+    await testCase("Null input", null);
+    await testCase("Undefined", undefined);
+    await testCase("Negative tokenId", -1);
+    await testCase("Zero tokenId (could be valid)", 0, true); // often valid!
+    await testCase("String instead of number", "notATokenId");
+    await testCase("Large number", ethers.constants.MaxUint256); // may or may not exist
+    await testCase("Floating-point number", 1.5);
+    await testCase("Boolean input", true);
+    await testCase("Object instead of number", { id: 1 });
+    await testCase("Array instead of number", [1]);
+
+    return results.join(",");
+}
+
+module.exports = {
+    runOwnerOfTests,
+};

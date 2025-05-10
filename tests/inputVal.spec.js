@@ -10,7 +10,7 @@ const {
     appendRowToCSV,
     createOutputCSV,
     getTimestamp
-} = require("../scripts/csvHandler");
+} = require("../scripts/csvHelper");
 const {findValidToken} = require("../scripts/contractOwnerHelper");
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
