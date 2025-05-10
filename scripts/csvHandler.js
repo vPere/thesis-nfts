@@ -10,6 +10,7 @@ class CSVHandler {
         Test3: '',
         Test4: '',
         Test5: '',
+        Test6: ''
         };
     }
 
@@ -31,12 +32,13 @@ class CSVHandler {
             row.Test3,
             row.Test4,
             row.Test5,
+            row.Test6
         ];
         fs.appendFileSync(filename, values.join(',') + '\n');
     }
 
     static createOutputCSV(timestamp) {
-        const headers = ['Address', 'Test1', 'Test2', 'Test3', 'Test4', 'Test5'];
+        const headers = ['Address', 'Test1', 'Test2', 'Test3', 'Test4', 'Test5', 'Test6'];
         const csvData = headers.join(',');
         const outputDir = path.resolve(__dirname, '../output');
         if (!fs.existsSync(outputDir)) {
