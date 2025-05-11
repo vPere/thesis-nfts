@@ -16,7 +16,7 @@ async function main() {
     //load the ABI files for each contract address
     await LOAD_ABI_FILES(contractAddresses);
     for (const address of contractAddresses) {
-        console.log(`🔵🔵🔵Testing ${address}...🔵🔵🔵`);
+        console.log(`\n\n🔵🔵🔵Testing ${address}...🔵🔵🔵`);
 
         const abiFile = GET_ABI_FILE(address);
 
