@@ -6,3 +6,5 @@ class NonDefinedHelper {
         return regex.test(errorMessage);
     }
 }
+
+module.exports = NonDefinedHelper;

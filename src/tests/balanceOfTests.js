@@ -1,4 +1,5 @@
 const { ethers } = require("hardhat");
+const {IS_NOT_DEFINED} = require("../helpers/nonDefinedHelper");
 
 async function runBalanceOfTests(address, abi, signer) {
     const nft = await ethers.getContractAt(abi, address, signer);
@@ -17,7 +18,7 @@ async function runBalanceOfTests(address, abi, signer) {
             }
         } catch (err) {
             //CHECK if the error message is due to the method not being defined
-            if (NonDefinedHelper.IS_NOT_DEFINED(err.message)) {
+            if (IS_NOT_DEFINED(err.message)) {
                 console.log("\t · TEST N/A: Method is not defined");
                 results.push('"N/A"'); // method not defined
                 return;
