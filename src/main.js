@@ -56,7 +56,7 @@ async function main() {
 }
 
 async function impersonateKnownAddress() {
-    const minter = '0x29469395eAf6f95920E59F858042f0e28D98a20B'; // Example: replace with a known minter address
+    const minter = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'; // Example: replace with a known minter address
     try {
         await network.provider.request({
             method: 'hardhat_impersonateAccount',
@@ -66,6 +66,7 @@ async function impersonateKnownAddress() {
         await funder.sendTransaction({
             to: minter,
             value: ethers.utils.parseEther("1.0"), // send 1 ETH
+            gasLimit: 210000,
         });
     } catch (e) {
         console.log(`Error: ${e.message}`);
