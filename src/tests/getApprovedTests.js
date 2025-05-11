@@ -55,14 +55,13 @@ async function runGetApprovedTests(address, abi, signer) {
         const approvedAddress = await nftAsOwner.getApproved(tokenId);
         console.log(`\t ✅ TEST PASS: Approved address is ${approvedAddress}`);
         results.push('"PASS"');
-    } catch (err) {
-        if (IS_NOT_DEFINED(err.message)) {
-            console.log("\t · TEST N/A: Method is not defined");
-            results.push('"N/A"'); // method not defined
-            return;
-        }
+    } catch (err) {if (IS_NOT_DEFINED(err.message)) {
+        console.log("\t · TEST N/A: Method is not defined");
+        results.push('"N/A"'); // method not defined
+    } else {
         console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
         results.push('"FAIL"');
+    }
     }
 
     await network.provider.request({
