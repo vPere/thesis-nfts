@@ -62,6 +62,11 @@ async function runIsApprovedForAllTests(address, abi, signer) {
         console.log(`\t ✅ TEST PASS: isApprovedForAll returned ${isApproved}`);
         results.push('"PASS"');
     } catch (err) {
+        if (IS_NOT_DEFINED(err.message)) {
+            console.log("\t · TEST N/A: Method is not defined");
+            results.push('"N/A"'); // method not defined
+            return;
+        }
         console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
         results.push('"FAIL"');
     }
