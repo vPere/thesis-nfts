@@ -36,7 +36,7 @@ async function runIsApprovedForAllTests(address, abi, signer) {
     await testCase("Invalid owner address (string)", "notAnAddress", validAddr);
     await testCase("Invalid operator address (string)", validAddr, "notAnAddress");
     await testCase("Zero address as owner", "0x0000000000000000000000000000000000000000", validAddr);
-    await testCase("Zero address as operator", validAddr, "0x0000000000000000000000000000000000000000");
+    await testCase("Zero address as operator", validAddr, "0x0000000000000000000000000000000000000000", true);
 
     // Valid test case via impersonation
     console.log("------------------------------------ Testing valid isApprovedForAll via impersonation...------------------------------------");
