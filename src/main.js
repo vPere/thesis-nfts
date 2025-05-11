@@ -63,6 +63,17 @@ async function impersonateKnownAddress() {
             params: [minter],
         });
         const funder = (await ethers.getSigners())[0]; // default account with ETH
+
+        // Set the funder's balance to a high value
+        await network.provider.request({
+            method: 'hardhat_setBalance',
+            params: [
+                funder.address,
+                ethers.utils.parseEther("1000.0").toHexString(), // Set balance to 1000 ETH
+            ],
+        });
+
+        // Send some ETH to the minter address
         await funder.sendTransaction({
             to: minter,
             value: ethers.utils.parseEther("1.0"), // send 1 ETH
