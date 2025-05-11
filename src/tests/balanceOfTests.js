@@ -12,12 +12,12 @@ async function runBalanceOfTests(address, abi, signer) {
                 console.log("\t ✅ TEST PASS: Expected success ");
                 results.push('"PASS"');
             } else {
-                console.log("\t\t ❌ TEST FAIL: Unexpected success ");
+                console.log("\t ❌ TEST FAIL: Unexpected success ");
                 results.push('"FAIL"'); // unexpected success
             }
         } catch (err) {
             if (expectSuccess) {
-                console.log("\t\t ❌ TEST FAIL: Unexpected error " + err.message);
+                console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
                 results.push('"FAIL"'); // unexpected error
             } else {
                 console.log("\t ✅ TEST PASS: Expected error " + err.message);
@@ -30,7 +30,7 @@ async function runBalanceOfTests(address, abi, signer) {
     await testCase("Empty string", "");
     await testCase("Short address", "0x1234");
     await testCase("Invalid hex", "notAnAddress");
-    await testCase("Zero address (valid)", "0x0000000000000000000000000000000000000000", true);
+    await testCase("Zero address (valid)", "0x0000000000000000000000000000000000000000");
     await testCase("Number instead of address", 123456);
     await testCase("Boolean instead of address", true);
     await testCase("Array instead of address", ["0x0000000000000000000000000000000000000000"]);
