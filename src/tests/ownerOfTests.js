@@ -36,6 +36,7 @@ async function runOwnerOfTests(address, abi, signer) {
     await testCase("Boolean input", true);
     await testCase("Object instead of number", { id: 1 });
     await testCase("Array instead of number", [1]);
+    await testCase("Array with more than one number", [1,2,3]);
     //TODO: Check for valid tokenId in the contract
 
     return results.join(",");
