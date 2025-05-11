@@ -10,6 +10,7 @@ const {LOAD_ABI_FILES, GET_ABI_FILE} = require("./helpers/abiHelper");
 const {runApproveTests} = require("./tests/aproveTests");
 const {runSetApprovalForAllTests} = require("./tests/setApprovalForAllTests");
 const {runGetApprovedTests} = require("./tests/getApprovedTests");
+const {runIsApprovedForAllTests} = require("./tests/isApprovedForAllTests");
 
 async function main() {
 //from here we'll call all the specific tests for each ERC-721 method.
@@ -54,10 +55,12 @@ async function main() {
         //// Call Tests on setApprovalForAll
         //const setApprovalForAllResults = await runSetApprovalForAllTests(address, abi, signer);
         //contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, setApprovalForAllResults);
-        // Call Tests on getApproved
-        const getApprovedResults = await runGetApprovedTests(address, abi, signer);
-        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, getApprovedResults);
-        // TODO: Call Tests on isApprovedForAll
+        //// Call Tests on getApproved
+        //const getApprovedResults = await runGetApprovedTests(address, abi, signer);
+        //contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, getApprovedResults);
+        // Call Tests on isApprovedForAll
+        const isApprovedForAllResults = await runIsApprovedForAllTests(address, abi, signer);
+        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, isApprovedForAllResults);
 
         // Append row to CSV file
         CsvHelper.APPEND_ROW_TO_CSV(outputFile, contractResults);
