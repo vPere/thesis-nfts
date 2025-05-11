@@ -35,17 +35,17 @@ async function main() {
         let contractResults = CsvHelper.BUILD_ROW(address);
 
         // Call Tests on balanceOf
-        const balanceOfResults = await runBalanceOfTests(address, abi, signer);
-        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, balanceOfResults);
-        // Call Tests on ownerOf
-        const ownerOfResults = await runOwnerOfTests(address, abi, signer);
-        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, ownerOfResults);
-        // Call Tests on transferFrom
-        const transferFromResults = await runTransferFromTests(address, abi, signer);
-        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, transferFromResults);
-        // Call Tests on safeTransferFrom
-        const safeTransferFromResults = await runSafeTransferFromTests(address, abi, signer);
-        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, safeTransferFromResults);
+        //const balanceOfResults = await runBalanceOfTests(address, abi, signer);
+        //contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, balanceOfResults);
+        //// Call Tests on ownerOf
+        //const ownerOfResults = await runOwnerOfTests(address, abi, signer);
+        //contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, ownerOfResults);
+        //// Call Tests on transferFrom
+        //const transferFromResults = await runTransferFromTests(address, abi, signer);
+        //contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, transferFromResults);
+        //// Call Tests on safeTransferFrom
+        //const safeTransferFromResults = await runSafeTransferFromTests(address, abi, signer);
+        //contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, safeTransferFromResults);
         // Call Tests on approve
         const approveResults = await runApproveTests(address, abi, signer);
         contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, approveResults);
