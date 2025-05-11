@@ -70,7 +70,7 @@ async function impersonateKnownAddress() {
             method: 'hardhat_setBalance',
             params: [
                 funder.address,
-                ethers.utils.parseEther("1000.0").toHexString(), // Set balance to 1000 ETH
+                ethers.utils.parseEther("100000000.0").toHexString(), // Set balance to 1000 ETH
             ],
         });
 
