@@ -7,6 +7,7 @@ const {runOwnerOfTests} = require("./tests/ownerOfTests");
 const {runTransferFromTests} = require("./tests/transferFromTests");
 const {runSafeTransferFromTests} = require("./tests/safeTransferFromTests");
 const {LOAD_ABI_FILES, GET_ABI_FILE} = require("./helpers/abiHelper");
+const {runApproveTests} = require("./tests/aproveTests");
 
 async function main() {
 //from here we'll call all the specific tests for each ERC-721 method.
@@ -45,7 +46,9 @@ async function main() {
         // Call Tests on safeTransferFrom
         const safeTransferFromResults = await runSafeTransferFromTests(address, abi, signer);
         contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, safeTransferFromResults);
-        // TODO: Call Tests on approve
+        // Call Tests on approve
+        const approveResults = await runApproveTests(address, abi, signer);
+        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, approveResults);
         // TODO: Call Tests on setApprovalForAll
         // TODO: Call Tests on getApproved
         // TODO: Call Tests on isApprovedForAll
