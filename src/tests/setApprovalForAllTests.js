@@ -40,6 +40,7 @@ async function runSetApprovalForAllTests(address, abi, signer) {
     await testCase("Zero address as operator", "0x0000000000000000000000000000000000000000", true);
 
     // Valid test case via impersonation
+    console.log("------------------------------------ Testing valid setApprovalForAll via impersonation...------------------------");
     const owner = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"; // Replace with a known owner
     const operator = "0x0000000000000000000000000000000000000002"; // Replace with a valid operator
 
