@@ -46,10 +46,12 @@ async function main() {
         //// Call Tests on safeTransferFrom
         //const safeTransferFromResults = await runSafeTransferFromTests(address, abi, signer);
         //contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, safeTransferFromResults);
-        // Call Tests on approve
-        const approveResults = await runApproveTests(address, abi, signer);
-        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, approveResults);
-        // TODO: Call Tests on setApprovalForAll
+        //// Call Tests on approve
+        //const approveResults = await runApproveTests(address, abi, signer);
+        //contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, approveResults);
+        // Call Tests on setApprovalForAll
+        const setApprovalForAllResults = await runApproveTests(address, abi, signer);
+        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, setApprovalForAllResults);
         // TODO: Call Tests on getApproved
         // TODO: Call Tests on isApprovedForAll
 
