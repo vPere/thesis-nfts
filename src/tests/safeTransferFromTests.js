@@ -5,27 +5,32 @@ async function runSafeTransferFromTests(address, abi, signer) {
     const results = [];
 
     async function testCase(name, from, to, tokenId, expectSuccess = false) {
+        console.log(`⚠ Testing ${name} with input: FROM: ${from}, TO: ${to}, TOKEN_ID: ${tokenId}...`)
         try {
             const tx = await nft["safeTransferFrom(address,address,uint256)"](from, to, tokenId, {
                 gasLimit: 1000000,
             });
             if (expectSuccess) {
                 await tx.wait();
+                console.log("\t ✅ TEST PASS: Expected success ");
                 results.push('"PASS"');
             } else {
+                console.log("\t ❌ TEST FAIL: Unexpected success ");
                 results.push('"FAIL"'); // unexpected success
             }
         } catch (err) {
             if (expectSuccess) {
+                console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
                 results.push('"FAIL"'); // unexpected error
             } else {
+                console.log("\t ✅ TEST PASS: Expected error " + err.message);
                 results.push('"PASS"');
             }
         }
     }
 
-    const validAddr = "0x0000000000000000000000000000000000000001";
-    const otherAddr = "0x0000000000000000000000000000000000000002";
+    const validAddr = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
+    const otherAddr = "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC";
 
     // Invalid input tests
     await testCase("Null from", null, validAddr, 1);

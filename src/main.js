@@ -5,7 +5,7 @@ const CsvHelper = require("./helpers/csvHelper");
 const {runBalanceOfTests} = require("./tests/balanceOfTests");
 const {runOwnerOfTests} = require("./tests/ownerOfTests");
 const {runTransferFromTests} = require("./tests/transferFromTests");
-const {runSafeTransferFromTests} = require("./tests/saveTransferFromTests");
+const {runSafeTransferFromTests} = require("./tests/safeTransferFromTests");
 const {LOAD_ABI_FILES, GET_ABI_FILE} = require("./helpers/abiHelper");
 
 async function main() {
@@ -40,11 +40,11 @@ async function main() {
         //const ownerOfResults = await runOwnerOfTests(address, abi, signer);
         //contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, ownerOfResults);
         //// Call Tests on transferFrom
-        const transferFromResults = await runTransferFromTests(address, abi, signer);
-        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, transferFromResults);
+        //const transferFromResults = await runTransferFromTests(address, abi, signer);
+        //contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, transferFromResults);
         //// Call Tests on safeTransferFrom
-        //const safeTransferFromResults = await runSafeTransferFromTests(address, abi, signer);
-        //contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, safeTransferFromResults);
+        const safeTransferFromResults = await runSafeTransferFromTests(address, abi, signer);
+        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, safeTransferFromResults);
         // TODO: Call Tests on approve
         // TODO: Call Tests on setApprovalForAll
         // TODO: Call Tests on getApproved
