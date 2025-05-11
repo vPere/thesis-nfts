@@ -16,6 +16,8 @@ async function main() {
     //load the ABI files for each contract address
     await LOAD_ABI_FILES(contractAddresses);
     for (const address of contractAddresses) {
+        console.log(`🔵🔵🔵Testing ${address}...🔵🔵🔵`);
+
         const abiFile = GET_ABI_FILE(address);
 
         if (abiFile === "0") {
@@ -31,7 +33,6 @@ async function main() {
         // prepare CSV row for this contract
         let contractResults = CsvHelper.BUILD_ROW(address);
 
-        console.log(`Testing ${address}...`);
         // Call Tests on balanceOf
         const balanceOfResults = await runBalanceOfTests(address, abi, signer);
         contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, balanceOfResults);
