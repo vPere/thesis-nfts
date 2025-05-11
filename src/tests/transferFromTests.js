@@ -5,18 +5,23 @@ async function runTransferFromTests(address, abi, signer) {
     const results = [];
 
     async function testCase(name, from, to, tokenId, expectSuccess = false) {
+        console.log(`⚠ Testing ${name} with input: ${input}...`);
         try {
             const tx = await nft.transferFrom(from, to, tokenId);
             if (expectSuccess) {
                 await tx.wait();
+                console.log("\t ✅ TEST PASS: Expected success ");
                 results.push('"PASS"');
             } else {
+                console.log("\t ❌ TEST FAIL: Unexpected success ");
                 results.push('"FAIL"'); // unexpected success
             }
         } catch (err) {
             if (expectSuccess) {
+                console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
                 results.push('"FAIL"'); // unexpected error
             } else {
+                console.log("\t ✅ TEST PASS: Expected error " + err.message);
                 results.push('"PASS"');
             }
         }
@@ -30,7 +35,9 @@ async function runTransferFromTests(address, abi, signer) {
     await testCase("Null to", validAddr, null, 1);
     await testCase("Null tokenId", validAddr, validAddr, null);
     await testCase("Invalid from address (short)", "0x1234", validAddr, 1);
-    await testCase("Invalid to address (string)", "notAnAddress", validAddr, 1);
+    await testCase("Invalid to address (short)",validAddr, "0x1234", 1);
+    await testCase("Invalid from address (string)", "notAnAddress", validAddr, 1);
+    await testCase("Invalid to address (string)",validAddr, "notAnAddress", 1);
     await testCase("Number instead of from", 123, validAddr, 1);
     await testCase("Array instead of to", validAddr, [validAddr], 1);
     await testCase("Object instead of from", { address: validAddr }, validAddr, 1);
@@ -40,10 +47,9 @@ async function runTransferFromTests(address, abi, signer) {
     await testCase("Zero address from", "0x0000000000000000000000000000000000000000", otherAddr, 1);
     await testCase("Zero address to", validAddr, "0x0000000000000000000000000000000000000000", 1);
 
-   /*
-    // ✅ Valid transfer (using impersonation)
-    const holder = "0x5a4F225A8E42f2a5c93Aa74fDbC1efC6Fe6720e1"; // TODO: Replace with actual owner address
-    const tokenId = 12345; // TODO: Replace with actual token ID the holder owns
+   /*TODO: ✅ Valid transfer (using impersonation)
+    const holder = "0x5a4F225A8E42f2a5c93Aa74fDbC1efC6Fe6720e1"; // TODO: Replace with actual owner address - ownerOf
+    const tokenId = 12345; // TODO: Replace with actual token ID the holder owns - tokenId
     const recipient = "0x0000000000000000000000000000000000000003";
 
     await network.provider.request({
