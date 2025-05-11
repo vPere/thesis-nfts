@@ -9,18 +9,18 @@ async function runBalanceOfTests(address, abi, signer) {
         try {
             await nft.balanceOf(input);
             if (expectSuccess) {
-                console.log("✅ TEST PASS: Expected success");
+                console.log("✅ TEST PASS: Expected success ");
                 results.push('"PASS"');
             } else {
-                console.log("❌ TEST FAIL: Unexpected success");
+                console.log("❌ TEST FAIL: Unexpected success ");
                 results.push('"FAIL"'); // unexpected success
             }
         } catch (err) {
             if (expectSuccess) {
-                console.log("❌ TEST FAIL: Unexpected error" + err.message);
+                console.log("❌ TEST FAIL: Unexpected error " + err.message);
                 results.push('"FAIL"'); // unexpected error
             } else {
-                console.log("✅ TEST PASS: Expected error" + err.message);
+                console.log("✅ TEST PASS: Expected error " + err.message);
                 results.push('"PASS"');
             }
         }
