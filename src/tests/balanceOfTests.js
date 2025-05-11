@@ -16,6 +16,12 @@ async function runBalanceOfTests(address, abi, signer) {
                 results.push('"FAIL"'); // unexpected success
             }
         } catch (err) {
+            //CHECK if the error message is due to the method not being defined
+            if (NonDefinedHelper.IS_NOT_DEFINED(err.message)) {
+                console.log("\t · TEST N/A: Method is not defined");
+                results.push('"N/A"'); // method not defined
+                return;
+            }
             if (expectSuccess) {
                 console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
                 results.push('"FAIL"'); // unexpected error

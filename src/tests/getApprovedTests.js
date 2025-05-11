@@ -16,6 +16,11 @@ async function runGetApprovedTests(address, abi, signer) {
                 results.push('"FAIL"');
             }
         } catch (err) {
+            if (NonDefinedHelper.IS_NOT_DEFINED(err.message)) {
+                console.log("\t · TEST N/A: Method is not defined");
+                results.push('"N/A"'); // method not defined
+                return;
+            }
             if (expectSuccess) {
                 console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
                 results.push('"FAIL"');
