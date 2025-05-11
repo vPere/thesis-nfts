@@ -77,7 +77,7 @@ async function impersonateKnownAddress() {
         // Send some ETH to the minter address
         await funder.sendTransaction({
             to: minter,
-            value: ethers.utils.parseEther("1.0"), // send 1 ETH
+            value: ethers.utils.parseEther("1000.0"), // send 1000 ETH
             gasLimit: 210000,
         });
     } catch (e) {
