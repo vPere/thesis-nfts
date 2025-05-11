@@ -5,17 +5,22 @@ async function runOwnerOfTests(address, abi, signer) {
     const results = [];
 
     async function testCase(name, input, expectSuccess = false) {
+        console.log(`⚠ Testing ${name} with input: ${input}...`);
         try {
             await nft.ownerOf(input);
             if (expectSuccess) {
+                console.log("\t ✅ TEST PASS: Expected success ");
                 results.push('"PASS"');
             } else {
+                console.log("\t ❌ TEST FAIL: Unexpected success ");
                 results.push('"FAIL"'); // unexpected success
             }
         } catch (err) {
             if (expectSuccess) {
+                console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
                 results.push('"FAIL"'); // unexpected error
             } else {
+                console.log("\t ✅ TEST PASS: Expected error " + err.message);
                 results.push('"PASS"');
             }
         }

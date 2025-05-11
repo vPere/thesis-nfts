@@ -5,7 +5,7 @@ async function runBalanceOfTests(address, abi, signer) {
     const results = [];
 
     async function testCase(name, input, expectSuccess = false) {
-        console.log(`⚠️ ⚠️ Testing ${name} with input: ${input} ⚠️ ⚠️`);
+        console.log(`⚠ Testing ${name} with input: ${input}...`);
         try {
             await nft.balanceOf(input);
             if (expectSuccess) {
