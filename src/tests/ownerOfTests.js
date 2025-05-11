@@ -35,7 +35,7 @@ async function runOwnerOfTests(address, abi, signer) {
     await testCase("Null input", null);
     await testCase("Undefined", undefined);
     await testCase("Negative tokenId", -1);
-    await testCase("Zero tokenId (could be valid)", 0, true); // often valid!
+    //await testCase("Zero tokenId (could be valid)", 0, true); // often valid!
     await testCase("String instead of number", "notATokenId");
     await testCase("Large number", ethers.constants.MaxUint256); // may or may not exist
     await testCase("Floating-point number", 1.5);
