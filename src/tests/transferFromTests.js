@@ -27,8 +27,8 @@ async function runTransferFromTests(address, abi, signer) {
         }
     }
 
-    const validAddr = "0x0000000000000000000000000000000000000001";
-    const otherAddr = "0x0000000000000000000000000000000000000002";
+    const validAddr = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
+    const otherAddr = "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC";
 
     // Invalid input tests
     await testCase("Null from", null, validAddr, 1);
