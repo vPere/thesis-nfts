@@ -8,6 +8,7 @@ async function runSetApprovalForAllTests(address, abi, signer) {
 
     async function testCase(name, operator, approved, expectSuccess = false) {
         console.log(`⚠ Testing ${name} with input: OPERATOR: ${operator}, APPROVED: ${approved}...`);
+        testCases.push(name);
         try {
             const tx = await nft.setApprovalForAll(operator, approved, {
                 gasLimit: 100000,
