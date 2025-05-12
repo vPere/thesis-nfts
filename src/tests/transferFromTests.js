@@ -8,7 +8,7 @@ async function runTransferFromTests(address, abi, signer) {
 
     async function testCase(name, from, to, tokenId, expectSuccess = false) {
         console.log(`⚠ Testing ${name} with input: FROM: ${from}, TO: ${to}, TOKEN_ID: ${tokenId}...`);
-        testcases.push(name);
+        testCases.push(name);
         try {
             const tx = await nft.transferFrom(from, to, tokenId);
             if (expectSuccess) {
