@@ -4,9 +4,11 @@ const {IS_NOT_DEFINED} = require("../helpers/nonDefinedHelper");
 async function runTransferFromTests(address, abi, signer) {
     const nft = await ethers.getContractAt(abi, address, signer);
     const results = [];
+    const testCases = [];
 
     async function testCase(name, from, to, tokenId, expectSuccess = false) {
         console.log(`⚠ Testing ${name} with input: FROM: ${from}, TO: ${to}, TOKEN_ID: ${tokenId}...`);
+        testcases.push(name);
         try {
             const tx = await nft.transferFrom(from, to, tokenId);
             if (expectSuccess) {
@@ -37,21 +39,21 @@ async function runTransferFromTests(address, abi, signer) {
     const otherAddr = "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"; //idk if it has enough funds
 
     // Invalid input tests
-    await testCase("Null from", null, validAddr, 1);
-    await testCase("Null to", validAddr, null, 1);
-    await testCase("Null tokenId", validAddr, validAddr, null);
-    await testCase("Invalid from address (short)", "0x1234", validAddr, 1);
-    await testCase("Invalid to address (short)",validAddr, "0x1234", 1);
-    await testCase("Invalid from address (string)", "notAnAddress", validAddr, 1);
-    await testCase("Invalid to address (string)",validAddr, "notAnAddress", 1);
-    await testCase("Number instead of from", 123, validAddr, 1);
-    await testCase("Array instead of to", validAddr, [validAddr], 1);
-    await testCase("Object instead of from", { address: validAddr }, validAddr, 1);
-    await testCase("String tokenId", validAddr, validAddr, "invalidTokenId");
-    await testCase("Negative tokenId", validAddr, validAddr, -1);
-    await testCase("Float tokenId", validAddr, validAddr, 1.5);
-    await testCase("Zero address from", "0x0000000000000000000000000000000000000000", otherAddr, 1);
-    await testCase("Zero address to", validAddr, "0x0000000000000000000000000000000000000000", 1);
+    await testCase("TF: Null from", null, validAddr, 1);
+    await testCase("TF: Null to", validAddr, null, 1);
+    await testCase("TF: Null tokenId", validAddr, validAddr, null);
+    await testCase("TF: Invalid from address (short)", "0x1234", validAddr, 1);
+    await testCase("TF: Invalid to address (short)",validAddr, "0x1234", 1);
+    await testCase("TF: Invalid from address (string)", "notAnAddress", validAddr, 1);
+    await testCase("TF: Invalid to address (string)",validAddr, "notAnAddress", 1);
+    await testCase("TF: Number instead of from", 123, validAddr, 1);
+    await testCase("TF: Array instead of to", validAddr, [validAddr], 1);
+    await testCase("TF: Object instead of from", { address: validAddr }, validAddr, 1);
+    await testCase("TF: String tokenId", validAddr, validAddr, "invalidTokenId");
+    await testCase("TF: Negative tokenId", validAddr, validAddr, -1);
+    await testCase("TF: Float tokenId", validAddr, validAddr, 1.5);
+    await testCase("TF: Zero address from", "0x0000000000000000000000000000000000000000", otherAddr, 1);
+    await testCase("TF: Zero address to", validAddr, "0x0000000000000000000000000000000000000000", 1);
 
    /*TODO: ✅ Valid transfer (using impersonation)
     const holder = "0x5a4F225A8E42f2a5c93Aa74fDbC1efC6Fe6720e1"; // TODO: Replace with actual owner address - ownerOf
@@ -80,7 +82,7 @@ async function runTransferFromTests(address, abi, signer) {
     });
     */
 
-    return results.join(",");
+    return {testCases, results};
 }
 
 module.exports = {

@@ -4,9 +4,11 @@ const {IS_NOT_DEFINED} = require("../helpers/nonDefinedHelper");
 async function runIsApprovedForAllTests(address, abi, signer) {
     const nft = await ethers.getContractAt(abi, address, signer);
     const results = [];
+    const testCases = [];
 
     async function testCase(name, owner, operator, expectSuccess = false) {
         console.log(`⚠ Testing ${name} with input: OWNER: ${owner}, OPERATOR: ${operator}...`);
+        testCases.push(name)
         try {
             const isApproved = await nft.isApprovedForAll(owner, operator);
             if (expectSuccess) {
@@ -35,20 +37,20 @@ async function runIsApprovedForAllTests(address, abi, signer) {
     const validAddr = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
 
     // Invalid input test cases
-    await testCase("Null owner address", null, validAddr);
-    await testCase("Null operator address", validAddr, null);
-    await testCase("Invalid owner address (short)", "0x1234", validAddr);
-    await testCase("Invalid operator address (short)", validAddr, "0x1234");
-    await testCase("Invalid owner address (string)", "notAnAddress", validAddr);
-    await testCase("Invalid operator address (string)", validAddr, "notAnAddress");
-    await testCase("Zero address as owner", "0x0000000000000000000000000000000000000000", validAddr);
-    await testCase("Zero address as operator", validAddr, "0x0000000000000000000000000000000000000000", true);
+    await testCase("IAFA: Null owner address", null, validAddr);
+    await testCase("IAFA: Null operator address", validAddr, null);
+    await testCase("IAFA: Invalid owner address (short)", "0x1234", validAddr);
+    await testCase("IAFA: Invalid operator address (short)", validAddr, "0x1234");
+    await testCase("IAFA: Invalid owner address (string)", "notAnAddress", validAddr);
+    await testCase("IAFA: Invalid operator address (string)", validAddr, "notAnAddress");
+    await testCase("IAFA: Zero address as owner", "0x0000000000000000000000000000000000000000", validAddr);
+    await testCase("IAFA: Zero address as operator", validAddr, "0x0000000000000000000000000000000000000000", true);
 
     // Valid test case via impersonation
     console.log("------------------------------------ Testing valid isApprovedForAll via impersonation...------------------------------------");
     const owner = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"; // Replace with a known owner
     const operator = "0x0000000000000000000000000000000000000002"; // Replace with a valid operator
-
+    testCases.push("IAFA: Valid via impersonation");
     await network.provider.request({
         method: "hardhat_impersonateAccount",
         params: [owner],
@@ -76,7 +78,7 @@ async function runIsApprovedForAllTests(address, abi, signer) {
         params: [owner],
     });
 
-    return results.join(",");
+    return {testCases, results};
 }
 
 module.exports = {

@@ -14,7 +14,6 @@ const {runIsApprovedForAllTests} = require("./tests/isApprovedForAllTests");
 
 async function main() {
 //from here we'll call all the specific tests for each ERC-721 method.
-    const outputFile = outputSetup();
     //load list of contract addresses
     const contractAddresses = getContractAddresses();
     //load the ABI files for each contract address
@@ -38,34 +37,36 @@ async function main() {
         // Impersonate a known privileged address (e.g., minter)
         const signer = await impersonateKnownAddress();
 
-        const testOutput = [];
+        const testOutputs = [];
         // Call Tests on balanceOf
         const balanceOfResults = await runBalanceOfTests(address, abi, signer);
-        testOutput.push(balanceOfResults);
+        testOutputs.push(balanceOfResults);
         // Call Tests on ownerOf
-        //const ownerOfResults = await runOwnerOfTests(address, abi, signer);
-        //testOutput.push(ownerOfResults);
-        //// Call Tests on transferFrom
-        //const transferFromResults = await runTransferFromTests(address, abi, signer);
-        //testOutput.push(transferFromResults);
-        //// Call Tests on safeTransferFrom
-        //const safeTransferFromResults = await runSafeTransferFromTests(address, abi, signer);
-        //testOutput.push(safeTransferFromResults);
-        //// Call Tests on approve
-        //const approveResults = await runApproveTests(address, abi, signer);
-        //testOutput.push(approveResults);
-        //// Call Tests on setApprovalForAll
-        //const setApprovalForAllResults = await runSetApprovalForAllTests(address, abi, signer);
-        //testOutput.push(setApprovalForAllResults);
-        //// Call Tests on getApproved
-        //const getApprovedResults = await runGetApprovedTests(address, abi, signer);
-        //testOutput.push(getApprovedResults);
-        //// Call Tests on isApprovedForAll
-        //const isApprovedForAllResults = await runIsApprovedForAllTests(address, abi, signer);
-        //testOutput.push(isApprovedForAllResults);
+        const ownerOfResults = await runOwnerOfTests(address, abi, signer);
+        testOutputs.push(ownerOfResults);
+        // Call Tests on transferFrom
+        const transferFromResults = await runTransferFromTests(address, abi, signer);
+        testOutputs.push(transferFromResults);
+        // Call Tests on safeTransferFrom
+        const safeTransferFromResults = await runSafeTransferFromTests(address, abi, signer);
+        testOutputs.push(safeTransferFromResults);
+        // Call Tests on approve
+        const approveResults = await runApproveTests(address, abi, signer);
+        testOutputs.push(approveResults);
+        // Call Tests on setApprovalForAll
+        const setApprovalForAllResults = await runSetApprovalForAllTests(address, abi, signer);
+        testOutputs.push(setApprovalForAllResults);
+        // Call Tests on getApproved
+        const getApprovedResults = await runGetApprovedTests(address, abi, signer);
+        testOutputs.push(getApprovedResults);
+        // Call Tests on isApprovedForAll
+        const isApprovedForAllResults = await runIsApprovedForAllTests(address, abi, signer);
+        testOutputs.push(isApprovedForAllResults);
 
-        csv.addTestResults(address, testOutput);
+        csv.addTestResults(address, testOutputs);
     }
+    // Write the results to the CSV file
+    csv.writeResultsToCSV();
     console.log("END");
 }
 
@@ -98,15 +99,6 @@ async function impersonateKnownAddress() {
     }
 
     return await ethers.getSigner(minter);
-}
-
-// function to setup the outputCSV file calling the csvHandler
-function outputSetup() {
-    const csvHelper = new CsvHelper();
-    const filename = csvHelper.createOutputCSV(csvHelper.timestamp);
-    console.log('Test run started at: ', csvHelper.timestamp);
-    console.log('Output file created at: ', filename);
-    return filename;
 }
 
 main();

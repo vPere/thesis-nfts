@@ -4,9 +4,11 @@ const {IS_NOT_DEFINED} = require("../helpers/nonDefinedHelper");
 async function runOwnerOfTests(address, abi, signer) {
     const nft = await ethers.getContractAt(abi, address, signer);
     const results = [];
+    const testCases = [];
 
     async function testCase(name, input, expectSuccess = false) {
         console.log(`⚠ Testing ${name} with input: ${input}...`);
+        testCases.push(name);
         try {
             await nft.ownerOf(input);
             if (expectSuccess) {
@@ -32,20 +34,20 @@ async function runOwnerOfTests(address, abi, signer) {
         }
     }
 
-    await testCase("Null input", null);
-    await testCase("Undefined", undefined);
-    await testCase("Negative tokenId", -1);
+    await testCase("OO: Null input", null);
+    await testCase("OO: Undefined", undefined);
+    await testCase("OO: Negative tokenId", -1);
     //await testCase("Zero tokenId (could be valid)", 0, true); // often valid!
-    await testCase("String instead of number", "notATokenId");
-    await testCase("Large number", ethers.constants.MaxUint256); // may or may not exist
-    await testCase("Floating-point number", 1.5);
-    await testCase("Boolean input", true);
-    await testCase("Object instead of number", { id: 1 });
-    await testCase("Array instead of number", [1]);
-    await testCase("Array with more than one number", [1,2,3]);
+    await testCase("OO: String instead of number", "notATokenId");
+    await testCase("OO: Large number", ethers.constants.MaxUint256); // may or may not exist
+    await testCase("OO: Floating-point number", 1.5);
+    await testCase("OO: Boolean input", true);
+    await testCase("OO: Object instead of number", { id: 1 });
+    await testCase("OO: Array instead of number", [1]);
+    await testCase("OO: Array with more than one number", [1,2,3]);
     //TODO: Check for valid tokenId in the contract
 
-    return results.join(",");
+    return {testCases, results};
 }
 
 module.exports = {

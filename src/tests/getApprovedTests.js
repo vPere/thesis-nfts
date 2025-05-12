@@ -4,9 +4,11 @@ const {IS_NOT_DEFINED} = require("../helpers/nonDefinedHelper");
 async function runGetApprovedTests(address, abi, signer) {
     const nft = await ethers.getContractAt(abi, address, signer);
     const results = [];
+    const testCases = [];
 
     async function testCase(name, tokenId, expectSuccess = false) {
         console.log(`⚠ Testing ${name} with input: TOKEN_ID: ${tokenId}...`);
+        testCases.push(name);
         try {
             const approvedAddress = await nft.getApproved(tokenId);
             if (expectSuccess) {
@@ -33,16 +35,16 @@ async function runGetApprovedTests(address, abi, signer) {
     }
 
     // Invalid input test cases
-    await testCase("Null tokenId", null);
-    await testCase("String tokenId", "abc");
-    await testCase("Negative tokenId", -1);
-    await testCase("Float tokenId", 1.5);
+    await testCase("GA: Null tokenId", null);
+    await testCase("GA: String tokenId", "abc");
+    await testCase("GA: Negative tokenId", -1);
+    await testCase("GA: Float tokenId", 1.5);
 
     // Valid test case via impersonation
     console.log("------------------------------------ Testing valid getApproved via impersonation...------------------------------------");
     const owner = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"; // Replace with a known owner
     const tokenId = 1; // Replace with a valid token ID
-
+    testCases.push("GA: Valid via impersonation");
     await network.provider.request({
         method: "hardhat_impersonateAccount",
         params: [owner],
@@ -69,7 +71,7 @@ async function runGetApprovedTests(address, abi, signer) {
         params: [owner],
     });
 
-    return results.join(",");
+    return {testCases, results};
 }
 
 module.exports = {
