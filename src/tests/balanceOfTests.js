@@ -4,9 +4,12 @@ const {IS_NOT_DEFINED} = require("../helpers/nonDefinedHelper");
 async function runBalanceOfTests(address, abi, signer) {
     const nft = await ethers.getContractAt(abi, address, signer);
     const results = [];
+    const testCases = [];
 
     async function testCase(name, input, expectSuccess = false) {
         console.log(`⚠ Testing ${name} with input: ${input}...`);
+        // Add test case to the list
+        testCases.push(name);
         try {
             await nft.balanceOf(input);
             if (expectSuccess) {
@@ -44,7 +47,7 @@ async function runBalanceOfTests(address, abi, signer) {
     await testCase("Object instead of address", { address: "0x0000000000000000000000000000000000000000" });
     await testCase("Invalid length address", "0x1234567890abcdef");
 
-    return results.join(",");
+    return {testCases, results};
 }
 
 module.exports = {

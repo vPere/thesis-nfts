@@ -1,7 +1,7 @@
 const {ethers, network} = require("hardhat");
 const fs = require("fs");
 const {getContractAddresses} = require("../input/contract-storage");
-const CsvHelper = require("./helpers/csvHelper");
+const Csv = require("./helpers/Csv");
 const {runBalanceOfTests} = require("./tests/balanceOfTests");
 const {runOwnerOfTests} = require("./tests/ownerOfTests");
 const {runTransferFromTests} = require("./tests/transferFromTests");
@@ -19,6 +19,10 @@ async function main() {
     const contractAddresses = getContractAddresses();
     //load the ABI files for each contract address
     await LOAD_ABI_FILES(contractAddresses);
+
+    //create a csv object
+    const csv = new Csv();
+
     for (const address of contractAddresses) {
         console.log(`\n\n🔵🔵🔵Testing ${address}...🔵🔵🔵`);
 
@@ -34,36 +38,33 @@ async function main() {
         // Impersonate a known privileged address (e.g., minter)
         const signer = await impersonateKnownAddress();
 
-        // prepare CSV row for this contract
-        let contractResults = CsvHelper.BUILD_ROW(address);
-
+        const testOutput = [];
         // Call Tests on balanceOf
         const balanceOfResults = await runBalanceOfTests(address, abi, signer);
-        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, balanceOfResults);
+        testOutput.push(balanceOfResults);
         // Call Tests on ownerOf
-        const ownerOfResults = await runOwnerOfTests(address, abi, signer);
-        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, ownerOfResults);
-        // Call Tests on transferFrom
-        const transferFromResults = await runTransferFromTests(address, abi, signer);
-        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, transferFromResults);
-        // Call Tests on safeTransferFrom
-        const safeTransferFromResults = await runSafeTransferFromTests(address, abi, signer);
-        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, safeTransferFromResults);
-        // Call Tests on approve
-        const approveResults = await runApproveTests(address, abi, signer);
-        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, approveResults);
-        // Call Tests on setApprovalForAll
-        const setApprovalForAllResults = await runSetApprovalForAllTests(address, abi, signer);
-        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, setApprovalForAllResults);
-        // Call Tests on getApproved
-        const getApprovedResults = await runGetApprovedTests(address, abi, signer);
-        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, getApprovedResults);
-        // Call Tests on isApprovedForAll
-        const isApprovedForAllResults = await runIsApprovedForAllTests(address, abi, signer);
-        contractResults = CsvHelper.APPEND_RESULT_TO_ROW(contractResults, isApprovedForAllResults);
+        //const ownerOfResults = await runOwnerOfTests(address, abi, signer);
+        //testOutput.push(ownerOfResults);
+        //// Call Tests on transferFrom
+        //const transferFromResults = await runTransferFromTests(address, abi, signer);
+        //testOutput.push(transferFromResults);
+        //// Call Tests on safeTransferFrom
+        //const safeTransferFromResults = await runSafeTransferFromTests(address, abi, signer);
+        //testOutput.push(safeTransferFromResults);
+        //// Call Tests on approve
+        //const approveResults = await runApproveTests(address, abi, signer);
+        //testOutput.push(approveResults);
+        //// Call Tests on setApprovalForAll
+        //const setApprovalForAllResults = await runSetApprovalForAllTests(address, abi, signer);
+        //testOutput.push(setApprovalForAllResults);
+        //// Call Tests on getApproved
+        //const getApprovedResults = await runGetApprovedTests(address, abi, signer);
+        //testOutput.push(getApprovedResults);
+        //// Call Tests on isApprovedForAll
+        //const isApprovedForAllResults = await runIsApprovedForAllTests(address, abi, signer);
+        //testOutput.push(isApprovedForAllResults);
 
-        // Append row to CSV file
-        CsvHelper.APPEND_ROW_TO_CSV(outputFile, contractResults);
+        csv.addTestResults(address, testOutput);
     }
     console.log("END");
 }
