@@ -43,7 +43,7 @@ async function runOwnerOfTests(address, abi, signer) {
     //await testCase("OO: Floating-point number", 1.5);
     //await testCase("OO: Boolean input", true);
     //await testCase("OO: Object instead of number", { id: 1 });
-    await testCase("OO: Array instead of number", [1]);
+    await testCase("OO: Array instead of number", [[1]]);
     //await testCase("OO: Array with more than one number", [1,2,3]);
     //TODO: Check for valid tokenId in the contract
 
