@@ -32,6 +32,7 @@ async function runSupportsInterfaceTests(address, abi, signer) {
         }
     } catch (error) {
         console.log(`❌ Error during supportsInterface test: ${error.message}`);
+        results.push("N/A");
     }
 
     return {testCases, results};
