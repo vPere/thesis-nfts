@@ -42,30 +42,30 @@ async function main() {
         const supportsInterfaceResults = await runSupportsInterfaceTests(address, abi, signer);
         testOutputs.push(supportsInterfaceResults);
 
-        //// Call Tests on balanceOf
-        //const balanceOfResults = await runBalanceOfTests(address, abi, signer);
-        //testOutputs.push(balanceOfResults);
+        // Call Tests on balanceOf
+        const balanceOfResults = await runBalanceOfTests(address, abi, signer);
+        testOutputs.push(balanceOfResults);
         // Call Tests on ownerOf
         const ownerOfResults = await runOwnerOfTests(address, abi, signer);
         testOutputs.push(ownerOfResults);
-        //// Call Tests on transferFrom
-        //const transferFromResults = await runTransferFromTests(address, abi, signer);
-        //testOutputs.push(transferFromResults);
-        //// Call Tests on safeTransferFrom
-        //const safeTransferFromResults = await runSafeTransferFromTests(address, abi, signer);
-        //testOutputs.push(safeTransferFromResults);
-        //// Call Tests on approve
-        //const approveResults = await runApproveTests(address, abi, signer);
-        //testOutputs.push(approveResults);
-        //// Call Tests on setApprovalForAll
-        //const setApprovalForAllResults = await runSetApprovalForAllTests(address, abi, signer);
-        //testOutputs.push(setApprovalForAllResults);
-        //// Call Tests on getApproved
-        //const getApprovedResults = await runGetApprovedTests(address, abi, signer);
-        //testOutputs.push(getApprovedResults);
-        //// Call Tests on isApprovedForAll
-        //const isApprovedForAllResults = await runIsApprovedForAllTests(address, abi, signer);
-        //testOutputs.push(isApprovedForAllResults);
+        // Call Tests on transferFrom
+        const transferFromResults = await runTransferFromTests(address, abi, signer);
+        testOutputs.push(transferFromResults);
+        // Call Tests on safeTransferFrom
+        const safeTransferFromResults = await runSafeTransferFromTests(address, abi, signer);
+        testOutputs.push(safeTransferFromResults);
+        // Call Tests on approve
+        const approveResults = await runApproveTests(address, abi, signer);
+        testOutputs.push(approveResults);
+        // Call Tests on setApprovalForAll
+        const setApprovalForAllResults = await runSetApprovalForAllTests(address, abi, signer);
+        testOutputs.push(setApprovalForAllResults);
+        // Call Tests on getApproved
+        const getApprovedResults = await runGetApprovedTests(address, abi, signer);
+        testOutputs.push(getApprovedResults);
+        // Call Tests on isApprovedForAll
+        const isApprovedForAllResults = await runIsApprovedForAllTests(address, abi, signer);
+        testOutputs.push(isApprovedForAllResults);
 
         csv.addTestResults(address, testOutputs);
     }
