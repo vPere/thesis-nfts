@@ -17,7 +17,7 @@ async function main() {
     //load list of contract addresses
     const contractAddresses = getContractAddresses();
     //load the ABI files for each contract address
-    //await LOAD_ABI_FILES(contractAddresses);
+    await LOAD_ABI_FILES(contractAddresses);
 
     //create a csv object
     const csv = new Csv();
@@ -25,12 +25,12 @@ async function main() {
     for (const address of contractAddresses) {
         console.log(`\n\n🔵🔵🔵Testing ${address}...🔵🔵🔵`);
 
-        //const abiFile = GET_ABI_FILE(address);
-        const abiFile = 'tmp/0x4e1f41613c9084fdb9e34e11fae9412427480e56.json'
-        //if (abiFile === "0") {
-        //    console.log("❌ Unable to find abi file for: " + address + "skipping address...");
-        //    continue;
-        //}
+        const abiFile = GET_ABI_FILE(address);
+        //const abiFile = 'tmp/0x4e1f41613c9084fdb9e34e11fae9412427480e56.json'
+        if (abiFile === "0") {
+            console.log("❌ Unable to find abi file for: " + address + "skipping address...");
+            continue;
+        }
         //read the abi file
         const abi = JSON.parse(fs.readFileSync(abiFile, 'utf8'));
 
