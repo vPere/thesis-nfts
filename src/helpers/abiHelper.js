@@ -4,7 +4,7 @@ const fs = require('fs');
 
 class AbiHelper {
   static ETHERSCAN_API_KEY = '9HG2298MKSCN6THHD3JQW2M83KNXNMWQTV'; // Replace with your API key
-  static ABI_DIR = 'tmp/'; // Directory where ABI files are stored
+  static ABI_DIR = ''; // Directory where ABI files are stored
 
   static async LOAD_ABI_FILES(contractAddresses) {
     const abis = {};
