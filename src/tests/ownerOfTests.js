@@ -42,7 +42,7 @@ async function runOwnerOfTests(address, abi, signer) {
     await testCase("OO: Floating-point number", 1.5);
     await testCase("OO: Boolean input", true);
     await testCase("OO: Object instead of number", { id: 1 });
-    await testCase("OO: Array instead of a number", [1,2]);
+    await testCase("OO: Array instead of a number", [1,2,3]);
 
     return {testCases, results};
 }
