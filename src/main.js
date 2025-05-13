@@ -11,6 +11,7 @@ const {runApproveTests} = require("./tests/aproveTests");
 const {runSetApprovalForAllTests} = require("./tests/setApprovalForAllTests");
 const {runGetApprovedTests} = require("./tests/getApprovedTests");
 const {runIsApprovedForAllTests} = require("./tests/isApprovedForAllTests");
+const {runSupportsInterfaceTests} = require("./tests/165supportsInterfaceTests");
 
 async function main() {
 //from here we'll call all the specific tests for each ERC-721 method.
@@ -37,6 +38,10 @@ async function main() {
         const signer = await impersonateKnownAddress();
 
         const testOutputs = [];
+        // Call Tests of ERC 165: "supportsInterface"
+        const supportsInterfaceResults = await runSupportsInterfaceTests(address, abi, signer);
+        testOutputs.push(supportsInterfaceResults);
+
         // Call Tests on balanceOf
         const balanceOfResults = await runBalanceOfTests(address, abi, signer);
         testOutputs.push(balanceOfResults);
