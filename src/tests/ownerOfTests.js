@@ -34,18 +34,15 @@ async function runOwnerOfTests(address, abi, signer) {
         }
     }
 
-    //await testCase("OO: Null input", null);
-    //await testCase("OO: Undefined", undefined);
-    //await testCase("OO: Negative tokenId", -1);
-    ////await testCase("Zero tokenId (could be valid)", 0, true); // often valid!
-    //await testCase("OO: String instead of number", "notATokenId");
-    //await testCase("OO: Large number", ethers.constants.MaxUint256); // may or may not exist
-    //await testCase("OO: Floating-point number", 1.5);
-    //await testCase("OO: Boolean input", true);
-    //await testCase("OO: Object instead of number", { id: 1 });
-    await testCase("OO: Array instead of number", [12]);
-    //await testCase("OO: Array with more than one number", [1,2,3]);
-    //TODO: Check for valid tokenId in the contract
+    await testCase("OO: Null input", null);
+    await testCase("OO: Undefined", undefined);
+    await testCase("OO: Negative tokenId", -1);
+    await testCase("OO: String instead of number", "notATokenId");
+    await testCase("OO: Large number", ethers.constants.MaxUint256);
+    await testCase("OO: Floating-point number", 1.5);
+    await testCase("OO: Boolean input", true);
+    await testCase("OO: Object instead of number", { id: 1 });
+    await testCase("OO: Array instead of a number", [1,2]);
 
     return {testCases, results};
 }
