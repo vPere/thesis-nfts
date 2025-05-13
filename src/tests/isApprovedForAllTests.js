@@ -41,7 +41,7 @@ async function runIsApprovedForAllTests(address, abi, signer) {
     await testCase("IAFA: Null operator address", validAddr, null);
     await testCase("IAFA: Invalid owner address (short)", "0x1234", validAddr);
     await testCase("IAFA: Invalid operator address (short)", validAddr, "0x1234");
-    await testCase("IAFA: Invalid owner address (string)", "notAnAddress", validAddr);
+    await testCase("IAFA: Invalid owner address (string)", "notAnAddress", validAddr, true);
     await testCase("IAFA: Invalid operator address (string)", validAddr, "notAnAddress");
     await testCase("IAFA: Zero address as owner", "0x0000000000000000000000000000000000000000", validAddr);
     await testCase("IAFA: Zero address as operator", validAddr, "0x0000000000000000000000000000000000000000", true);

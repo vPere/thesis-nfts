@@ -18,7 +18,7 @@ async function main() {
     //load list of contract addresses
     const contractAddresses = getContractAddresses();
     //load the ABI files for each contract address
-    await LOAD_ABI_FILES(contractAddresses);
+    //await LOAD_ABI_FILES(contractAddresses);
 
     //create a csv object
     const csv = new Csv();
