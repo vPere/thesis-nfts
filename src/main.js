@@ -26,7 +26,6 @@ async function main() {
         console.log(`\n\n🔵🔵🔵Testing ${address}...🔵🔵🔵`);
 
         const abiFile = GET_ABI_FILE(address);
-        //const abiFile = 'tmp/0x4e1f41613c9084fdb9e34e11fae9412427480e56.json'
         if (abiFile === "0") {
             console.log("❌ Unable to find abi file for: " + address + "skipping address...");
             continue;
