@@ -115,7 +115,6 @@
     '0xF23270e58A3F4e275751924476E145D51e0FC96c',
 ];*/
 const contractAddresses = [
-    /*
     "0x4e1f41613c9084fdb9e34e11fae9412427480e56",
     "0x7bd29408f11d2bfc23c34f18275bbf23bb716bc7",
     "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
@@ -616,8 +615,6 @@ const contractAddresses = [
     "0x4287bd7cc2b4aa8650e2887055a4674759c216e2",
     "0x8c186802b1992f7650ac865d4ca94d55ff3c0d17",
     "0x477f885f6333317f5b2810ecc8afadc7d5b69dd2"
-     */
-    '0xDCA91409018ea80B71d21E818f00e76072969861'
 ];
 
 function getContractAddresses() {
