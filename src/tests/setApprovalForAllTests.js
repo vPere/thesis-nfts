@@ -40,12 +40,12 @@ async function runSetApprovalForAllTests(address, abi, signer) {
     const validAddr = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
 
     // Invalid input test cases
-    //await testCase("SAFA: Null operator address", null, true);
-    //await testCase("SAFA: Invalid operator address (short)", "0x1234", true);
-    //await testCase("SAFA: Invalid operator address (string)", "notAnAddress", true);
-    //await testCase("SAFA: Array instead of operator address", [validAddr], true);
-    //await testCase("SAFA: Object instead of operator address", { operator: validAddr }, true);
-    //await testCase("SAFA: Zero address as operator", "0x0000000000000000000000000000000000000000", true, true);
+    await testCase("SAFA: Null operator address", null, true);
+    await testCase("SAFA: Invalid operator address (short)", "0x1234", true);
+    await testCase("SAFA: Invalid operator address (string)", "notAnAddress", true);
+    await testCase("SAFA: Array instead of operator address", [validAddr], true);
+    await testCase("SAFA: Object instead of operator address", { operator: validAddr }, true);
+    await testCase("SAFA: Zero address as operator", "0x0000000000000000000000000000000000000000", true, true);
 
     // Valid test case via impersonation
     console.log("------------------------------------ Testing valid setApprovalForAll via impersonation...------------------------------------");
