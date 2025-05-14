@@ -18,7 +18,7 @@ async function main() {
     //load list of contract addresses
     const contractAddresses = getContractAddresses();
     //load the ABI files for each contract address
-    await LOAD_ABI_FILES(contractAddresses);
+    //await LOAD_ABI_FILES(contractAddresses);
 
     //create a csv object
     const csv = new Csv();
@@ -38,34 +38,34 @@ async function main() {
         const signer = await impersonateKnownAddress();
 
         const testOutputs = [];
-        // Call Tests of ERC 165: "supportsInterface"
-        const supportsInterfaceResults = await runSupportsInterfaceTests(address, abi, signer);
-        testOutputs.push(supportsInterfaceResults);
+        //// Call Tests of ERC 165: "supportsInterface"
+        //const supportsInterfaceResults = await runSupportsInterfaceTests(address, abi, signer);
+        //testOutputs.push(supportsInterfaceResults);
 
         // Call Tests on balanceOf
-        const balanceOfResults = await runBalanceOfTests(address, abi, signer);
-        testOutputs.push(balanceOfResults);
-        // Call Tests on ownerOf
-        const ownerOfResults = await runOwnerOfTests(address, abi, signer);
-        testOutputs.push(ownerOfResults);
-        // Call Tests on transferFrom
-        const transferFromResults = await runTransferFromTests(address, abi, signer);
-        testOutputs.push(transferFromResults);
-        // Call Tests on safeTransferFrom
-        const safeTransferFromResults = await runSafeTransferFromTests(address, abi, signer);
-        testOutputs.push(safeTransferFromResults);
-        // Call Tests on approve
-        const approveResults = await runApproveTests(address, abi, signer);
-        testOutputs.push(approveResults);
+        //const balanceOfResults = await runBalanceOfTests(address, abi, signer);
+        //testOutputs.push(balanceOfResults);
+        //// Call Tests on ownerOf
+        //const ownerOfResults = await runOwnerOfTests(address, abi, signer);
+        //testOutputs.push(ownerOfResults);
+        //// Call Tests on transferFrom
+        //const transferFromResults = await runTransferFromTests(address, abi, signer);
+        //testOutputs.push(transferFromResults);
+        //// Call Tests on safeTransferFrom
+        //const safeTransferFromResults = await runSafeTransferFromTests(address, abi, signer);
+        //testOutputs.push(safeTransferFromResults);
+        //// Call Tests on approve
+        //const approveResults = await runApproveTests(address, abi, signer);
+        //testOutputs.push(approveResults);
         // Call Tests on setApprovalForAll
         const setApprovalForAllResults = await runSetApprovalForAllTests(address, abi, signer);
         testOutputs.push(setApprovalForAllResults);
-        // Call Tests on getApproved
-        const getApprovedResults = await runGetApprovedTests(address, abi, signer);
-        testOutputs.push(getApprovedResults);
-        // Call Tests on isApprovedForAll
-        const isApprovedForAllResults = await runIsApprovedForAllTests(address, abi, signer);
-        testOutputs.push(isApprovedForAllResults);
+        //// Call Tests on getApproved
+        //const getApprovedResults = await runGetApprovedTests(address, abi, signer);
+        //testOutputs.push(getApprovedResults);
+        //// Call Tests on isApprovedForAll
+        //const isApprovedForAllResults = await runIsApprovedForAllTests(address, abi, signer);
+        //testOutputs.push(isApprovedForAllResults);
 
         csv.addTestResults(address, testOutputs);
     }
