@@ -35,10 +35,10 @@ async function runGetApprovedTests(address, abi, signer) {
     }
 
     // Invalid input test cases
-    //await testCase("GA: Null tokenId", null);
-    //await testCase("GA: String tokenId", "abc");
-    //await testCase("GA: Negative tokenId", -1);
-    //await testCase("GA: Float tokenId", 1.5);
+    await testCase("GA: Null tokenId", null);
+    await testCase("GA: String tokenId", "abc");
+    await testCase("GA: Negative tokenId", -1);
+    await testCase("GA: Float tokenId", 1.5);
 
     // Valid test case via impersonation
     console.log("------------------------------------ Testing valid getApproved via impersonation...------------------------------------");
