@@ -29,8 +29,7 @@ async function runSetApprovalForAllTests(address, abi, signer) {
             }
             if (expectSuccess) {
                 console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
-                //results.push('"FAIL"');
-                results.push(err.message);
+                results.push('"FAIL"');
             } else {
                 console.log("\t ✅ TEST PASS: Expected error " + err.message);
                 results.push('"PASS"');
@@ -41,13 +40,13 @@ async function runSetApprovalForAllTests(address, abi, signer) {
     const validAddr = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
 
     // Invalid input test cases
-    //await testCase("SAFA: Null operator address", null, true);
-    //await testCase("SAFA: Invalid operator address (short)", "0x1234", true);
-    //await testCase("SAFA: Invalid operator address (string)", "notAnAddress", true);
-    //await testCase("SAFA: Array instead of operator address", [validAddr], true);
-    //await testCase("SAFA: Object instead of operator address", { operator: validAddr }, true);
+    await testCase("SAFA: Null operator address", null, true);
+    await testCase("SAFA: Invalid operator address (short)", "0x1234", true);
+    await testCase("SAFA: Invalid operator address (string)", "notAnAddress", true);
+    await testCase("SAFA: Array instead of operator address", [validAddr], true);
+    await testCase("SAFA: Object instead of operator address", { operator: validAddr }, true);
     await testCase("SAFA: Zero address as operator", "0x0000000000000000000000000000000000000000", true, true);
-      /*
+
     // Valid test case via impersonation
     console.log("------------------------------------ Testing valid setApprovalForAll via impersonation...------------------------------------");
     const owner = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"; // Replace with a known owner
@@ -82,7 +81,7 @@ async function runSetApprovalForAllTests(address, abi, signer) {
         method: "hardhat_stopImpersonatingAccount",
         params: [owner],
     });
-    */
+
 
     return {testCases, results};
 }
