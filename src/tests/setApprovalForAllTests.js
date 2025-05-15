@@ -73,7 +73,7 @@ async function runSetApprovalForAllTests(address, abi, signer) {
             results.push('"N/A"'); // method not defined
         } else {
             console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
-            results.push('"FAIL"');
+            results.push(err.message);
         }
     }
 
