@@ -7,7 +7,7 @@ async function runOwnerOfTests(address, abi, signer) {
     const testCases = [];
 
     async function testCase(name, input, expectSuccess = false) {
-        console.log(`⚠ Testing ${name} with input:` + input + `...`);
+        console.log(`⚠ Testing ${name} with input: ` + input + `...`);
         testCases.push(name);
         try {
             const owner = await nft.ownerOf(input);
@@ -48,7 +48,11 @@ async function runOwnerOfTests(address, abi, signer) {
     //await testCase("OO: Floating-point number", 1.5);
     //await testCase("OO: Boolean input", true);
     //await testCase("OO: Object instead of number", { id: 1 });
-    await testCase("OO: Number 1", 1);
+    const input = ethers.BigNumber.from([1,2,3]);
+    console.log("Encoded input: ", input);
+    console.log("Input type:", typeof input);
+    console.log("Actual input value:", input);
+    await testCase("OO: Number", input);
     await testCase("OO: Array instead of a number", [1,2,3]);
 
     return {testCases, results};
