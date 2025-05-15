@@ -1,4 +1,4 @@
-/*
+
 const contractAddresses = [
     '0x4e1f41613c9084fdb9e34e11fae9412427480e56',
     '0x7bd29408f11d2bfc23c34f18275bbf23bb716bc7',
@@ -159,7 +159,7 @@ const contractAddresses = [
     '0xc631164b6cb1340b5123c9162f8558c866de1926',
     '0xdfde78d2baec499fe18f2be74b6c287eed9511d7',
     '0x7deb7bce4d360ebe68278dee6054b882aa62d19c',
-    '0x5bd815fd6c096bab38b4c6553cfce3585194dff9',
+    //'0x5bd815fd6c096bab38b4c6553cfce3585194dff9', TODO: TOO SLOW!!!
     '0xeb2dfc54ebafca8f50efcc1e21a9d100b5aeb349',
     '0x3acce66cd37518a6d77d9ea3039e00b3a2955460',
     '0x6fd053bff10512d743fa36c859e49351a4920df6',
@@ -3144,9 +3144,9 @@ const contractAddresses = [
     '0x020cdc4775366ae436f13a7d333143432e884934',
     '0x66293a9b1339ca99623e82bc71f88d767f60ad21',
 ];
-*/
 
-const contractAddresses = [
+
+/*const contractAddresses = [
     '0x4e1f41613c9084fdb9e34e11fae9412427480e56',
     '0x7bd29408f11d2bfc23c34f18275bbf23bb716bc7',
     '0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d',
@@ -5373,7 +5373,7 @@ const contractAddresses = [
     '0x0b17cbf93a6bc286a2760ad206b03d4e42997382',
     '0x020cdc4775366ae436f13a7d333143432e884934',
     '0x66293a9b1339ca99623e82bc71f88d767f60ad21',
-];
+];*/
 function getContractAddresses() {
     return contractAddresses;
 }
