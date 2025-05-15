@@ -28,11 +28,11 @@ async function runBalanceOfTests(address, abi, signer) {
             }
             if (expectSuccess) {
                 console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
-                //results.push('"FAIL"'); // unexpected error
-                results.push(err.message); // unexpected error
+                results.push('"FAIL"'); // unexpected error
             } else {
                 console.log("\t ✅ TEST PASS: Expected error " + err.message);
-                results.push('"PASS"');
+                //results.push('"PASS"');
+                results.push(err.message); // expected error
             }
         }
     }
