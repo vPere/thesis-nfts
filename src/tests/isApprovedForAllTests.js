@@ -6,6 +6,10 @@ async function runIsApprovedForAllTests(address, abi, signer) {
     const results = [];
     const testCases = [];
 
+    const proxyRegistryAddress = "0x00000000006c3852cbEf3e08E8dF289169EdE581";
+    const code = await ethers.provider.getCode(proxyRegistryAddress);
+    console.log("Proxy Registry Code:", code);
+
     async function testCase(name, owner, operator, expectSuccess = false) {
         console.log(`⚠ Testing ${name} with input: OWNER: ${owner}, OPERATOR: ${operator}...`);
         testCases.push(name)
