@@ -43,7 +43,7 @@ async function runGetApprovedTests(address, abi, signer) {
     // Valid test case via impersonation
     console.log("------------------------------------ Testing valid getApproved via impersonation...------------------------------------");
     const owner = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"; // Replace with a known owner
-    const tokenId = 2222; // Replace with a valid token ID
+    const tokenId = 1; // Replace with a valid token ID
     testCases.push("GA: Valid via impersonation");
     await network.provider.request({
         method: "hardhat_impersonateAccount",
