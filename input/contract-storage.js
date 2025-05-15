@@ -3166,6 +3166,14 @@ const contractAddresses = [
     '0x91680cf5f9071cafae21b90ebf2c9cc9e480fb93',
     '0x99ecdf17ded4fcb6c5f0fe280d21f832af464f67',
     '0x90ee3cf59fcde2fe11838b9075ea4681462362f1',
+    '0x892848074ddea461a15f337250da3ce55580ca85',
+    '0xe75512aa3bec8f00434bbd6ad8b0a3fbff100ad6',
+    '0xb852c6b5892256c264cc2c888ea462189154d8d7',
+    '0x08d7c0242953446436f34b4c78fe9da38c73668d',
+    '0xacf63e56fd08970b43401492a02f6f38b6635c91',
+    '0x7ea3cca10668b8346aec0bf1844a49e995527c8b',
+    '0x0c2e57efddba8c768147d1fdf9176a0a6ebd5d83',
+    '0xc92ceddfb8dd984a89fb494c376f9a48b999aafc',
 ];
 function getContractAddresses() {
     return contractAddresses;
