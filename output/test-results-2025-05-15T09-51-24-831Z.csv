@@ -1,0 +1,2 @@
+Address,IAFA: Valid via impersonation
+0x32e136be91606c645ff62ff7075b2f0472fa13e1,call revert exception [ See: https://links.ethers.org/v5-errors-CALL_EXCEPTION ] (method="isApprovedForAll(address,address)", data="0x", errorArgs=null, errorName=null, errorSignature=null, reason=null, code=CALL_EXCEPTION, version=abi/5.8.0)
