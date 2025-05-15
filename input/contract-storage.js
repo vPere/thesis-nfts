@@ -3147,7 +3147,8 @@ const contractAddresses = [
 */
 
 const contractAddresses = [
-    '0x32e136be91606c645ff62ff7075b2f0472fa13e1'
+    '0x32e136be91606c645ff62ff7075b2f0472fa13e1',
+    '0x5536b6aadd29eaf0db112bb28046a5fad3761bd4'
     ];
 function getContractAddresses() {
     return contractAddresses;

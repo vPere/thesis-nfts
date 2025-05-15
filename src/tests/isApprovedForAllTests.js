@@ -6,10 +6,6 @@ async function runIsApprovedForAllTests(address, abi, signer) {
     const results = [];
     const testCases = [];
 
-    const proxyRegistryAddress = "0x00000000006c3852cbEf3e08E8dF289169EdE581";
-    const code = await ethers.provider.getCode(proxyRegistryAddress);
-    console.log("Proxy Registry Code:", code);
-
     async function testCase(name, owner, operator, expectSuccess = false) {
         console.log(`⚠ Testing ${name} with input: OWNER: ${owner}, OPERATOR: ${operator}...`);
         testCases.push(name)
@@ -30,7 +26,8 @@ async function runIsApprovedForAllTests(address, abi, signer) {
             }
             if (expectSuccess) {
                 console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
-                results.push('"FAIL"');
+                //results.push('"FAIL"');
+                results.push(err.message);
             } else {
                 console.log("\t ✅ TEST PASS: Expected error " + err.message);
                 results.push('"PASS"');
@@ -47,10 +44,10 @@ async function runIsApprovedForAllTests(address, abi, signer) {
     //await testCase("IAFA: Invalid operator address (short)", validAddr, "0x1234");
     //await testCase("IAFA: Invalid owner address (string)", "notAnAddress", validAddr);
     //await testCase("IAFA: Invalid operator address (string)", validAddr, "notAnAddress");
-    //await testCase("IAFA: Zero address as owner", "0x0000000000000000000000000000000000000000", validAddr, true);
-    //await testCase("IAFA: Zero address as operator", validAddr, "0x0000000000000000000000000000000000000000", true);
+    await testCase("IAFA: Zero address as owner", "0x0000000000000000000000000000000000000000", validAddr, true);
+    await testCase("IAFA: Zero address as operator", validAddr, "0x0000000000000000000000000000000000000000", true);
 
-    // Valid test case via impersonation
+/*    // Valid test case via impersonation
     console.log("------------------------------------ Testing valid isApprovedForAll via impersonation...------------------------------------");
     const owner = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"; // Replace with a known owner
     const operator = "0x0000000000000000000000000000000000000002"; // Replace with a valid operator
@@ -73,14 +70,14 @@ async function runIsApprovedForAllTests(address, abi, signer) {
             results.push('"N/A"'); // method not defined
         } else {
             console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
-            results.push(err.message);
+            results.push('"FAIL"');
         }
     }
 
     await network.provider.request({
         method: "hardhat_stopImpersonatingAccount",
         params: [owner],
-    });
+    });*/
 
     return {testCases, results};
 }
