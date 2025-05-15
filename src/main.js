@@ -43,8 +43,8 @@ async function main() {
         //testOutputs.push(supportsInterfaceResults);
 
         // Call Tests on balanceOf
-        //const balanceOfResults = await runBalanceOfTests(address, abi, signer);
-        //testOutputs.push(balanceOfResults);
+        const balanceOfResults = await runBalanceOfTests(address, abi, signer);
+        testOutputs.push(balanceOfResults);
         //// Call Tests on ownerOf
         //const ownerOfResults = await runOwnerOfTests(address, abi, signer);
         //testOutputs.push(ownerOfResults);
@@ -63,9 +63,9 @@ async function main() {
         //// Call Tests on getApproved
         //const getApprovedResults = await runGetApprovedTests(address, abi, signer);
         //testOutputs.push(getApprovedResults);
-        // Call Tests on isApprovedForAll
-        const isApprovedForAllResults = await runIsApprovedForAllTests(address, abi, signer);
-        testOutputs.push(isApprovedForAllResults);
+        //// Call Tests on isApprovedForAll
+        //const isApprovedForAllResults = await runIsApprovedForAllTests(address, abi, signer);
+        //testOutputs.push(isApprovedForAllResults);
 
         csv.addTestResults(address, testOutputs);
     }
