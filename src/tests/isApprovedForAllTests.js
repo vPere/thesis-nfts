@@ -26,8 +26,7 @@ async function runIsApprovedForAllTests(address, abi, signer) {
             }
             if (expectSuccess) {
                 console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
-                //results.push('"FAIL"');
-                results.push(err.message);
+                results.push('"FAIL"');
             } else {
                 console.log("\t ✅ TEST PASS: Expected error " + err.message);
                 results.push('"PASS"');

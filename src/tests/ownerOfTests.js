@@ -21,7 +21,7 @@ async function runOwnerOfTests(address, abi, signer) {
                     results.push('"FAIL"'); // unexpected zero address
                 } else {
                     console.log("\t ✅ TEST PASS: " + owner);
-                    results.push('"PASS"' + owner);
+                    results.push('"PASS"');
                 }
             }
         } catch (err) {
