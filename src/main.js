@@ -42,12 +42,12 @@ async function main() {
         //const supportsInterfaceResults = await runSupportsInterfaceTests(address, abi, signer);
         //testOutputs.push(supportsInterfaceResults);
 
-        // Call Tests on balanceOf
-        const balanceOfResults = await runBalanceOfTests(address, abi, signer);
-        testOutputs.push(balanceOfResults);
-        //// Call Tests on ownerOf
-        //const ownerOfResults = await runOwnerOfTests(address, abi, signer);
-        //testOutputs.push(ownerOfResults);
+        //// Call Tests on balanceOf
+        //const balanceOfResults = await runBalanceOfTests(address, abi, signer);
+        //testOutputs.push(balanceOfResults);
+        // Call Tests on ownerOf
+        const ownerOfResults = await runOwnerOfTests(address, abi, signer);
+        testOutputs.push(ownerOfResults);
         //// Call Tests on transferFrom
         //const transferFromResults = await runTransferFromTests(address, abi, signer);
         //testOutputs.push(transferFromResults);

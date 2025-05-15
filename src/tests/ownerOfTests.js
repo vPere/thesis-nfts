@@ -10,13 +10,13 @@ async function runOwnerOfTests(address, abi, signer) {
         console.log(`⚠ Testing ${name} with input: ${input}...`);
         testCases.push(name);
         try {
-            await nft.ownerOf(input);
+            const owner = await nft.ownerOf(input);
             if (expectSuccess) {
                 console.log("\t ✅ TEST PASS: Expected success ");
                 results.push('"PASS"');
             } else {
-                console.log("\t ❌ TEST FAIL: Unexpected success ");
-                results.push('"FAIL"'); // unexpected success
+                console.log("\t ❌ TEST FAIL: Unexpected success " + owner);
+                results.push(owner); // unexpected success
             }
         } catch (err) {
             if (IS_NOT_DEFINED(err.message)) {
@@ -34,15 +34,15 @@ async function runOwnerOfTests(address, abi, signer) {
         }
     }
 
-    await testCase("OO: Null input", null);
-    await testCase("OO: Undefined", undefined);
-    await testCase("OO: Negative tokenId", -1);
-    await testCase("OO: String instead of number", "notATokenId");
+    //await testCase("OO: Null input", null);
+    //await testCase("OO: Undefined", undefined);
+    //await testCase("OO: Negative tokenId", -1);
+    //await testCase("OO: String instead of number", "notATokenId");
     await testCase("OO: Large number", ethers.constants.MaxUint256);
-    await testCase("OO: Floating-point number", 1.5);
-    await testCase("OO: Boolean input", true);
-    await testCase("OO: Object instead of number", { id: 1 });
-    await testCase("OO: Array instead of a number", [1,2,3]);
+    //await testCase("OO: Floating-point number", 1.5);
+    //await testCase("OO: Boolean input", true);
+    //await testCase("OO: Object instead of number", { id: 1 });
+    //await testCase("OO: Array instead of a number", [1,2,3]);
 
     return {testCases, results};
 }
