@@ -29,7 +29,8 @@ async function runSetApprovalForAllTests(address, abi, signer) {
             }
             if (expectSuccess) {
                 console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
-                results.push('"FAIL"');
+                //results.push('"FAIL"');
+                results.push(err.message);
             } else {
                 console.log("\t ✅ TEST PASS: Expected error " + err.message);
                 results.push('"PASS"');
