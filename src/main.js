@@ -1,6 +1,6 @@
 const {ethers, network} = require("hardhat");
 const fs = require("fs");
-const {getContractAddresses} = require("../input/contract-storage");
+const {getContractAddresses, getContractAddresses10} = require("../input/contract-storage");
 const Csv = require("./helpers/Csv");
 const {runBalanceOfTests} = require("./tests/balanceOfTests");
 const {runOwnerOfTests} = require("./tests/ownerOfTests");
@@ -17,7 +17,7 @@ const {runSafeTransferFromWithDataTests} = require("./tests/safeTransferFrom-Wit
 async function main() {
 //from here we'll call all the specific tests for each ERC-721 method.
     //load list of contract addresses
-    const contractAddresses = await getContractAddresses();
+    const contractAddresses = await getContractAddresses10();
     //load the ABI files for each contract address
     const numOfAbis = await LOAD_ABI_FILES(contractAddresses);
 
@@ -70,7 +70,7 @@ async function main() {
         // Call Tests on setApprovalForAll
         const setApprovalForAllResults = await runSetApprovalForAllTests(address, abi, signer);
         testOutputs.push(setApprovalForAllResults);
-        //// Call Tests on getApproved
+        // Call Tests on getApproved
         const getApprovedResults = await runGetApprovedTests(address, abi, signer);
         testOutputs.push(getApprovedResults);
         // Call Tests on isApprovedForAll

@@ -12,23 +12,13 @@ async function runBalanceOfTests(address, abi, signer) {
         testCases.push(name);
         try {
             await nft.balanceOf(input);
-            if (expectSuccess) {
-                console.log("\t ✅ TEST PASS: Expected success ");
-                results.push('"PASS"');
-            } else {
-                console.log("\t ❌ TEST FAIL: Unexpected success ");
-                results.push('"FAIL"'); // unexpected success
-            }
+            console.log("\t ❌ TEST FAIL: Unexpected success ");
+            results.push('"FAIL"'); // unexpected success
         } catch (err) {
             //CHECK if the error message is due to the method not being defined
             if (IS_NOT_DEFINED(err.message)) {
                 console.log("\t · TEST N/A: Method is not defined");
                 results.push('"N/A"'); // method not defined
-                return;
-            }
-            if (expectSuccess) {
-                console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
-                results.push('"FAIL"'); // unexpected error
             } else {
                 console.log("\t ✅ TEST PASS: Expected error " + err.message);
                 results.push('"PASS"');

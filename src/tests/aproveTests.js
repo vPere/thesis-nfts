@@ -13,23 +13,12 @@ async function runApproveTests(address, abi, signer) {
             const tx = await nft.approve(to, tokenId, {
                 gasLimit: 100000,
             });
-            if (expectSuccess) {
-                await tx.wait();
-                console.log("\t ✅ TEST PASS: Expected success ");
-                results.push('"PASS"');
-            } else {
-                console.log("\t ❌ TEST FAIL: Unexpected success ");
-                results.push('"FAIL"'); // unexpected success
-            }
+            console.log("\t ❌ TEST FAIL: Unexpected success ");
+            results.push('"FAIL"'); // unexpected success
         } catch (err) {
             if (IS_NOT_DEFINED(err.message)) {
                 console.log("\t · TEST N/A: Method is not defined");
                 results.push('"N/A"'); // method not defined
-                return;
-            }
-            if (expectSuccess) {
-                console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
-                results.push('"FAIL"'); // unexpected failure
             } else {
                 console.log("\t ✅ TEST PASS: Expected error " + err.message);
                 results.push('"PASS"');
@@ -51,36 +40,6 @@ async function runApproveTests(address, abi, signer) {
     await testCase("A: Negative tokenId", validAddr, -1);
     await testCase("A: Float tokenId", validAddr, 1.5);
     await testCase("A: Zero address as 'to'", "0x0000000000000000000000000000000000000000", 1);
-
-    /*
-    // ✅ Valid test via impersonation
-    const holder = "0x5a4F225A8E42f2a5c93Aa74fDbC1efC6Fe6720e1"; // Replace with real holder
-    const tokenId = 12345; // Replace with real token ID
-    const recipient = "0x0000000000000000000000000000000000000002";
-
-    await network.provider.request({
-        method: "hardhat_impersonateAccount",
-        params: [holder],
-    });
-
-    const impersonatedSigner = await ethers.getSigner(holder);
-    const nftAsHolder = await ethers.getContractAt(abi, address, impersonatedSigner);
-
-    try {
-        const tx = await nftAsHolder.approve(recipient, tokenId, {
-            gasLimit: 100000,
-        });
-        await tx.wait();
-        results.push('"PASS"');
-    } catch (err) {
-        results.push('"FAIL"');
-    }
-
-    await network.provider.request({
-        method: "hardhat_stopImpersonatingAccount",
-        params: [holder],
-    });
-    */
 
     return {testCases, results};
 }

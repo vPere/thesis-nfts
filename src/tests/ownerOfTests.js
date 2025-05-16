@@ -6,15 +6,11 @@ async function runOwnerOfTests(address, abi, signer) {
     const results = [];
     const testCases = [];
 
-    async function testCase(name, input, expectSuccess = false) {
+    async function testCase(name, input) {
         console.log(`⚠ Testing ${name} with input: ` + input + `...`);
         testCases.push(name);
         try {
             const owner = await nft.ownerOf(input);
-            if (expectSuccess) {
-                console.log("\t ✅ TEST PASS: Expected success ");
-                results.push('"PASS"');
-            } else {
                 // ensure the owner is not equal to the zero address
                 if (owner === ethers.constants.AddressZero) {
                     console.log("\t ❌ TEST FAIL: Unexpected zero address " + owner);
@@ -23,16 +19,10 @@ async function runOwnerOfTests(address, abi, signer) {
                     console.log("\t ✅ TEST PASS: " + owner);
                     results.push('"PASS"');
                 }
-            }
         } catch (err) {
             if (IS_NOT_DEFINED(err.message)) {
                 console.log("\t · TEST N/A: Method is not defined");
                 results.push('"N/A"'); // method not defined
-                return;
-            }
-            if (expectSuccess) {
-                console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
-                results.push('"FAIL"'); // unexpected error
             } else {
                 console.log("\t ✅ TEST PASS: Expected error " + err.message);
                 results.push('"PASS"');

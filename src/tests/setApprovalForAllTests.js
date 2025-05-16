@@ -6,30 +6,20 @@ async function runSetApprovalForAllTests(address, abi, signer) {
     const results = [];
     const testCases = [];
 
-    async function testCase(name, operator, approved, expectSuccess = false) {
+    async function testCase(name, operator, approved) {
         console.log(`⚠ Testing ${name} with input: OPERATOR: ${operator}, APPROVED: ${approved}...`);
         testCases.push(name);
         try {
             const tx = await nft.setApprovalForAll(operator, approved, {
                 gasLimit: 1000000,
             });
-            if (expectSuccess) {
-                await tx.wait();
-                console.log("\t ✅ TEST PASS: Expected success");
-                results.push('"PASS"');
-            } else {
                 console.log("\t ❌ TEST FAIL: Unexpected success");
                 results.push('"FAIL"');
-            }
+
         } catch (err) {
             if (IS_NOT_DEFINED(err.message)) {
                 console.log("\t · TEST N/A: Method is not defined");
                 results.push('"N/A"'); // method not defined
-                return;
-            }
-            if (expectSuccess) {
-                console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
-                results.push('"FAIL"');
             } else {
                 console.log("\t ✅ TEST PASS: Expected error " + err.message);
                 results.push('"PASS"');

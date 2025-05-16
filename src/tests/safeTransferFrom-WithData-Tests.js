@@ -6,30 +6,19 @@ async function runSafeTransferFromWithDataTests(address, abi, signer) {
     const results = [];
     const testCases = [];
 
-    async function testCase(name, from, to, tokenId, data= "", expectSuccess = false) {
+    async function testCase(name, from, to, tokenId, data= "") {
         console.log(`⚠ Testing ${name} with input: FROM: ${from}, TO: ${to}, TOKEN_ID: ${tokenId}...`)
         testCases.push(name);
         try {
             const tx = await nft["safeTransferFrom(address,address,uint256,bytes)"](from, to, tokenId, data, {
                 gasLimit: 1000000,
             });
-            if (expectSuccess) {
-                await tx.wait();
-                console.log("\t ✅ TEST PASS: Expected success ");
-                results.push('"PASS"');
-            } else {
-                console.log("\t ❌ TEST FAIL: Unexpected success ");
-                results.push('"FAIL"'); // unexpected success
-            }
+            console.log("\t ❌ TEST FAIL: Unexpected success ");
+            results.push('"FAIL"'); // unexpected success
         } catch (err) {
             if (IS_NOT_DEFINED(err.message)) {
                 console.log("\t · TEST N/A: Method is not defined");
                 results.push('"N/A"'); // method not defined
-                return;
-            }
-            if (expectSuccess) {
-                console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
-                results.push('"FAIL"'); // unexpected error
             } else {
                 console.log("\t ✅ TEST PASS: Expected error " + err.message);
                 results.push('"PASS"');
