@@ -44,12 +44,12 @@ async function runIsApprovedForAllTests(address, abi, signer) {
     await testCase("IAFA: Invalid owner address (string)", "notAnAddress", validAddr);
     await testCase("IAFA: Invalid operator address (string)", validAddr, "notAnAddress");
     await testCase("IAFA: Zero address as owner", "0x0000000000000000000000000000000000000000", validAddr, true);
-    await testCase("IAFA: Zero address as operator", validAddr, "0x0000000000000000000000000000000000000000", true);
+    //await testCase("IAFA: Zero address as operator", validAddr, "0x0000000000000000000000000000000000000000", true); Can't be tested, it is not specified
 
     // Valid test case via impersonation
     console.log("------------------------------------ Testing valid isApprovedForAll via impersonation...------------------------------------");
     const owner = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"; // Replace with a known owner
-    const operator = "0x0000000000000000000000000000000000000002"; // Replace with a valid operator
+    const operator = "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"; // Replace with a valid operator
     testCases.push("IAFA: Valid via impersonation");
     await network.provider.request({
         method: "hardhat_impersonateAccount",

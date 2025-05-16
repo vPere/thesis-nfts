@@ -45,7 +45,7 @@ async function runSetApprovalForAllTests(address, abi, signer) {
     await testCase("SAFA: Invalid operator address (string)", "notAnAddress", true);
     await testCase("SAFA: Array instead of operator address", [validAddr], true);
     await testCase("SAFA: Object instead of operator address", { operator: validAddr }, true);
-    await testCase("SAFA: Zero address as operator", "0x0000000000000000000000000000000000000000", true, true);
+    //await testCase("SAFA: Zero address as operator", "0x0000000000000000000000000000000000000000", true, true); Not specified in ERC721 as invalid input
 
     // Valid test case via impersonation
     console.log("------------------------------------ Testing valid setApprovalForAll via impersonation...------------------------------------");

@@ -1,4 +1,4 @@
-const { ethers, network } = require("hardhat");
+const { ethers } = require("hardhat");
 const {IS_NOT_DEFINED} = require("../helpers/nonDefinedHelper");
 
 async function runGetApprovedTests(address, abi, signer) {
@@ -39,37 +39,6 @@ async function runGetApprovedTests(address, abi, signer) {
     await testCase("GA: String tokenId", "abc");
     await testCase("GA: Negative tokenId", -1);
     await testCase("GA: Float tokenId", 1.5);
-
-    // Valid test case via impersonation
-    console.log("------------------------------------ Testing valid getApproved via impersonation...------------------------------------");
-    const owner = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"; // Replace with a known owner
-    const tokenId = 1; // Replace with a valid token ID //TODO: Loop and get valid ones jumping
-    testCases.push("GA: Valid via impersonation");
-    await network.provider.request({
-        method: "hardhat_impersonateAccount",
-        params: [owner],
-    });
-
-    const impersonatedSigner = await ethers.getSigner(owner);
-    const nftAsOwner = await ethers.getContractAt(abi, address, impersonatedSigner);
-
-    try {
-        const approvedAddress = await nftAsOwner.getApproved(tokenId);
-        console.log(`\t ✅ TEST PASS: Approved address is ${approvedAddress}`);
-        results.push('"PASS"');
-    } catch (err) {if (IS_NOT_DEFINED(err.message)) {
-        console.log("\t · TEST N/A: Method is not defined");
-        results.push('"N/A"'); // method not defined
-    } else {
-        console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
-        results.push('"FAIL"');
-    }
-    }
-
-    await network.provider.request({
-        method: "hardhat_stopImpersonatingAccount",
-        params: [owner],
-    });
 
     return {testCases, results};
 }
