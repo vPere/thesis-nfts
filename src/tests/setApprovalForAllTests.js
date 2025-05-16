@@ -50,7 +50,7 @@ async function runSetApprovalForAllTests(address, abi, signer) {
     // Valid test case via impersonation
     console.log("------------------------------------ Testing valid setApprovalForAll via impersonation...------------------------------------");
     const owner = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"; // Replace with a known owner
-    const operator = "0x0000000000000000000000000000000000000002"; // Replace with a valid operator
+    const operator = "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"; // Replace with a valid operator
     testCases.push("SAFA: Valid via impersonation");
     await network.provider.request({
         method: "hardhat_impersonateAccount",

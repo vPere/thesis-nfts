@@ -1,4 +1,4 @@
-const { ethers, network } = require("hardhat");
+const { ethers } = require("hardhat");
 const {IS_NOT_DEFINED} = require("../helpers/nonDefinedHelper");
 
 async function runTransferFromTests(address, abi, signer) {
@@ -54,33 +54,6 @@ async function runTransferFromTests(address, abi, signer) {
     await testCase("TF: Float tokenId", validAddr, validAddr, 1.5);
     await testCase("TF: Zero address from", "0x0000000000000000000000000000000000000000", otherAddr, 1);
     await testCase("TF: Zero address to", validAddr, "0x0000000000000000000000000000000000000000", 1);
-
-   /*TODO: ✅ Valid transfer (using impersonation)
-    const holder = "0x5a4F225A8E42f2a5c93Aa74fDbC1efC6Fe6720e1"; // TODO: Replace with actual owner address - ownerOf
-    const tokenId = 12345; // TODO: Replace with actual token ID the holder owns - tokenId
-    const recipient = "0x0000000000000000000000000000000000000003";
-
-    await network.provider.request({
-        method: "hardhat_impersonateAccount",
-        params: [holder],
-    });
-    const impersonatedSigner = await ethers.getSigner(holder);
-
-    const nftAsHolder = await ethers.getContractAt(abi, address, signer); //changed impersonatedSigner to signer
-
-    try {
-        const tx = await nftAsHolder.transferFrom(holder, recipient, tokenId);
-        await tx.wait();
-        results.push('"PASS"');
-    } catch (err) {
-        results.push('"FAIL"');
-    }
-
-    await network.provider.request({
-        method: "hardhat_stopImpersonatingAccount",
-        params: [holder],
-    });
-    */
 
     return {testCases, results};
 }

@@ -12,6 +12,7 @@ const {runSetApprovalForAllTests} = require("./tests/setApprovalForAllTests");
 const {runGetApprovedTests} = require("./tests/getApprovedTests");
 const {runIsApprovedForAllTests} = require("./tests/isApprovedForAllTests");
 const {runSupportsInterfaceTests} = require("./tests/165supportsInterfaceTests");
+const {runSafeTransferFromWithDataTests} = require("./tests/safeTransferFrom-WithData-Tests");
 
 async function main() {
 //from here we'll call all the specific tests for each ERC-721 method.
@@ -60,6 +61,9 @@ async function main() {
         // Call Tests on safeTransferFrom
         const safeTransferFromResults = await runSafeTransferFromTests(address, abi, signer);
         testOutputs.push(safeTransferFromResults);
+        // Call Tests on safeTransferFrom with extra data parameter
+        const safeTransferFromWithDataResults = await runSafeTransferFromWithDataTests(address, abi, signer);
+        testOutputs.push(safeTransferFromWithDataResults);
         // Call Tests on approve
         const approveResults = await runApproveTests(address, abi, signer);
         testOutputs.push(approveResults);
