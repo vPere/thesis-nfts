@@ -16,13 +16,13 @@ const {runSupportsInterfaceTests} = require("./tests/165supportsInterfaceTests")
 async function main() {
 //from here we'll call all the specific tests for each ERC-721 method.
     //load list of contract addresses
-    const contractAddresses = getContractAddresses();
+    const contractAddresses = await getContractAddresses();
     //load the ABI files for each contract address
-    await LOAD_ABI_FILES(contractAddresses);
+    const numOfAbis = await LOAD_ABI_FILES(contractAddresses);
 
     //create a csv object
     const csv = new Csv();
-
+    console.log('Running tests for ' + numOfAbis + ' contracts...');
     for (const address of contractAddresses) {
         console.log(`\n\n🔵🔵🔵Testing ${address}...🔵🔵🔵`);
 
@@ -38,34 +38,34 @@ async function main() {
         const signer = await impersonateKnownAddress();
 
         const testOutputs = [];
-        //// Call Tests of ERC 165: "supportsInterface"
-        //const supportsInterfaceResults = await runSupportsInterfaceTests(address, abi, signer);
-        //testOutputs.push(supportsInterfaceResults);
-        //
-        //// Call Tests on balanceOf
-        //const balanceOfResults = await runBalanceOfTests(address, abi, signer);
-        //testOutputs.push(balanceOfResults);
-        //// Call Tests on ownerOf
-        //const ownerOfResults = await runOwnerOfTests(address, abi, signer);
-        //testOutputs.push(ownerOfResults);
-        //// Call Tests on transferFrom
-        //const transferFromResults = await runTransferFromTests(address, abi, signer);
-        //testOutputs.push(transferFromResults);
-        //// Call Tests on safeTransferFrom
-        //const safeTransferFromResults = await runSafeTransferFromTests(address, abi, signer);
-        //testOutputs.push(safeTransferFromResults);
-        //// Call Tests on approve
-        //const approveResults = await runApproveTests(address, abi, signer);
-        //testOutputs.push(approveResults);
+        // Call Tests of ERC 165: "supportsInterface"
+        const supportsInterfaceResults = await runSupportsInterfaceTests(address, abi, signer);
+        testOutputs.push(supportsInterfaceResults);
+
+        // Call Tests on balanceOf
+        const balanceOfResults = await runBalanceOfTests(address, abi, signer);
+        testOutputs.push(balanceOfResults);
+        // Call Tests on ownerOf
+        const ownerOfResults = await runOwnerOfTests(address, abi, signer);
+        testOutputs.push(ownerOfResults);
+        // Call Tests on transferFrom
+        const transferFromResults = await runTransferFromTests(address, abi, signer);
+        testOutputs.push(transferFromResults);
+        // Call Tests on safeTransferFrom
+        const safeTransferFromResults = await runSafeTransferFromTests(address, abi, signer);
+        testOutputs.push(safeTransferFromResults);
+        // Call Tests on approve
+        const approveResults = await runApproveTests(address, abi, signer);
+        testOutputs.push(approveResults);
         // Call Tests on setApprovalForAll
         const setApprovalForAllResults = await runSetApprovalForAllTests(address, abi, signer);
         testOutputs.push(setApprovalForAllResults);
-        ////// Call Tests on getApproved
-        //const getApprovedResults = await runGetApprovedTests(address, abi, signer);
-        //testOutputs.push(getApprovedResults);
-        //// Call Tests on isApprovedForAll
-        //const isApprovedForAllResults = await runIsApprovedForAllTests(address, abi, signer);
-        //testOutputs.push(isApprovedForAllResults);
+        //// Call Tests on getApproved
+        const getApprovedResults = await runGetApprovedTests(address, abi, signer);
+        testOutputs.push(getApprovedResults);
+        // Call Tests on isApprovedForAll
+        const isApprovedForAllResults = await runIsApprovedForAllTests(address, abi, signer);
+        testOutputs.push(isApprovedForAllResults);
 
         csv.addTestResults(address, testOutputs);
     }
@@ -88,15 +88,15 @@ async function impersonateKnownAddress() {
             method: 'hardhat_setBalance',
             params: [
                 funder.address,
-                ethers.utils.parseEther("100000000.0").toHexString(), // Set balance to 1000 ETH
+                ethers.utils.parseEther("100000000.0").toHexString(), // Set balance to 100000000 ETH
             ],
         });
 
         // Send some ETH to the minter address
         await funder.sendTransaction({
             to: minter,
-            value: ethers.utils.parseEther("1000.0"), // send 1000 ETH
-            gasLimit: 210000,
+            value: ethers.utils.parseEther("10000.0"), // send 10000 ETH
+            gasLimit: 1000000,
         });
     } catch (e) {
         console.log(`Error: ${e.message}`);

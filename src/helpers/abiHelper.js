@@ -7,19 +7,23 @@ class AbiHelper {
   static ABI_DIR = 'tmp/'; // Directory where ABI files are stored
 
   static async LOAD_ABI_FILES(contractAddresses) {
+    let counter = 0;
     const abis = {};
     for (let address of contractAddresses) {
         if (AbiHelper.ABI_FILE_EXISTS(address)) {
             console.log(`✅ ABI for ${address} already exists. Skipping...`);
+            counter++;
         } else {
           const abi = await AbiHelper.FETCH_ABI(address);
           if (abi) {
             abis[address] = abi;
             fs.writeFileSync(AbiHelper.ABI_DIR + `${address}.json`, JSON.stringify(abi, null, 2));
             console.log(`✅ Saved ABI for ${address}`);
+            counter++;
           }
         }
     }
+    return counter;
   }
 
   static async FETCH_ABI(address) {

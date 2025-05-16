@@ -4,7 +4,7 @@ const path = require("path");
 
 const BASE_URL = "https://api.coinmarketcap.com/nft/v3/nft/collectionsv2";
 const OUTPUT_DIR = path.join(__dirname, "jsons");
-const TOTAL_PAGES = 32;
+const TOTAL_PAGES = 33;
 const ITEMS_PER_PAGE = 100;
 
 // Ensure the output directory exists

@@ -44,6 +44,7 @@ async function runOwnerOfTests(address, abi, signer) {
     await testCase("OO: Undefined", undefined);
     await testCase("OO: Negative tokenId", -1);
     await testCase("OO: String instead of number", "notATokenId");
+    await testCase("OO: String instead of number", "123"); //TODO: Check this possible case later?
     await testCase("OO: Large number", ethers.constants.MaxUint256);
     await testCase("OO: Floating-point number", 1.5);
     await testCase("OO: Boolean input", true);
