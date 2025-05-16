@@ -42,6 +42,12 @@ async function main() {
         const supportsInterfaceResults = await runSupportsInterfaceTests(address, abi, signer);
         testOutputs.push(supportsInterfaceResults);
 
+        if (!supportsInterfaceResults.results.includes("PASS")) {
+            console.log("❌ Skipping tests for " + address + " because it does not support ERC721.");
+            csv.addTestResults(address, testOutputs);
+            continue;
+        }
+
         // Call Tests on balanceOf
         const balanceOfResults = await runBalanceOfTests(address, abi, signer);
         testOutputs.push(balanceOfResults);
