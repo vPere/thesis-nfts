@@ -11,7 +11,7 @@ async function runSetApprovalForAllTests(address, abi, signer) {
         testCases.push(name);
         try {
             const tx = await nft.setApprovalForAll(operator, approved, {
-                gasLimit: 1000000,
+                gasLimit: 30000,
             });
                 console.log("\t ❌ TEST FAIL: Unexpected success");
                 results.push('"FAIL"');
@@ -39,8 +39,8 @@ async function runSetApprovalForAllTests(address, abi, signer) {
 
     // Valid test case via impersonation
     console.log("------------------------------------ Testing valid setApprovalForAll via impersonation...------------------------------------");
-    const owner = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"; // Replace with a known owner
-    const operator = "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"; // Replace with a valid operator
+    const operator = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
+    const owner = "0xbDA5747bFD65F08deb54cb465eB87D40e51B197E";
     testCases.push("SAFA: Valid via impersonation");
     await network.provider.request({
         method: "hardhat_impersonateAccount",
@@ -51,9 +51,7 @@ async function runSetApprovalForAllTests(address, abi, signer) {
     const nftAsOwner = await ethers.getContractAt(abi, address, impersonatedSigner);
 
     try {
-        const tx = await nftAsOwner.setApprovalForAll(operator, true, {
-            gasLimit: 1000000,
-        });
+        const tx = await nftAsOwner.setApprovalForAll(operator, true);
         await tx.wait();
         console.log("\t ✅ TEST PASS: Successfully set approval for all");
         results.push('"PASS"');
@@ -63,7 +61,7 @@ async function runSetApprovalForAllTests(address, abi, signer) {
             results.push('"N/A"'); // method not defined
         } else {
             console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
-            results.push(err.message);
+            results.push('"FAIL"');
         }
     }
 

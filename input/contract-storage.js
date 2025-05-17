@@ -1,8 +1,7 @@
 const fs = require("fs-extra");
 const path = require("path");
 const csv = require("csv-parser");
-const INPUT_DIR = path.join(__dirname, "jsons");
-const CSV_PATH = path.join(INPUT_DIR, "collections.csv");
+const CSV_PATH = path.join(__dirname, "collections.csv");
 
 function getContractAddresses() {
     return new Promise((resolve, reject) => {

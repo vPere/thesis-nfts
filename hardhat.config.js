@@ -1,17 +1,29 @@
 /** @type import('hardhat/config').HardhatUserConfig */
 require("@nomiclabs/hardhat-ethers");
+require("dotenv").config();
+const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY;
+
 
 module.exports = {
   solidity: "0.8.28",
   networks: {
     localhost: {
-      url: "http://127.0.0.1:8545", // This is for local Hardhat network
+      url: "http://127.0.0.1:8545",
+      http: {
+        timeout: 0
+      }
     },
     hardhat: {
       forking: {
-        url: "https://eth-mainnet.g.alchemy.com/v2/9nMjQEfnED5wUjFHqt7_7PCIz8ofRDN5", // Use your Alchemy API key here
+        url: 'https://eth-mainnet.g.alchemy.com/v2/'+ ALCHEMY_API_KEY
       },
-      loggingEnabled: true,
+      accounts: {
+        balance: "1000000000000000000000000"
+      },
+      http: {
+        timeout: 0
+      },
+      loggingEnabled: true
     },
   },
 };

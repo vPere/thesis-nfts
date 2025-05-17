@@ -3,7 +3,7 @@ const path = require("path");
 const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 
 const INPUT_DIR = path.join(__dirname, "jsons");
-const OUTPUT_FILE = path.join(INPUT_DIR, "collections.csv");
+const OUTPUT_FILE = path.join(__dirname, "collections.csv");
 
 const csvWriter = createCsvWriter({
     path: OUTPUT_FILE,

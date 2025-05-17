@@ -1,10 +1,12 @@
 // abiHelper.js
 const axios = require('axios');
 const fs = require('fs');
+const dotenv = require('dotenv').config();
+
+const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 
 class AbiHelper {
-  static ETHERSCAN_API_KEY = '9HG2298MKSCN6THHD3JQW2M83KNXNMWQTV'; // Replace with your API key
-  static ABI_DIR = 'tmp/'; // Directory where ABI files are stored
+  static ABI_DIR = 'src/tmp/'; // Directory where ABI files are stored
 
   static async LOAD_ABI_FILES(contractAddresses) {
     let counter = 0;
@@ -27,7 +29,7 @@ class AbiHelper {
   }
 
   static async FETCH_ABI(address) {
-    const url = `https://api.etherscan.io/api?module=contract&action=getabi&address=${address}&apikey=${AbiHelper.ETHERSCAN_API_KEY}`;
+    const url = `https://api.etherscan.io/api?module=contract&action=getabi&address=${address}&apikey=${ETHERSCAN_API_KEY}`;
     try {
       const response = await axios.get(url);
       if (response.data.status === "1") {

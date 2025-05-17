@@ -1,6 +1,6 @@
 const {ethers, network} = require("hardhat");
 const fs = require("fs");
-const {getContractAddresses, getContractAddresses10} = require("../input/contract-storage");
+const {getContractAddresses} = require("../input/contract-storage");
 const Csv = require("./helpers/Csv");
 const {runBalanceOfTests} = require("./tests/balanceOfTests");
 const {runOwnerOfTests} = require("./tests/ownerOfTests");
@@ -17,7 +17,7 @@ const {runSafeTransferFromWithDataTests} = require("./tests/safeTransferFrom-Wit
 async function main() {
 //from here we'll call all the specific tests for each ERC-721 method.
     //load list of contract addresses
-    const contractAddresses = await getContractAddresses10();
+    const contractAddresses = await getContractAddresses();
     //load the ABI files for each contract address
     const numOfAbis = await LOAD_ABI_FILES(contractAddresses);
 
@@ -91,23 +91,14 @@ async function impersonateKnownAddress() {
             method: 'hardhat_impersonateAccount',
             params: [minter],
         });
-        const funder = (await ethers.getSigners())[0]; // default account with ETH
+        console.log(`Impersonating account: ${minter}`);
+        const balance = await ethers.provider.getBalance(minter);
+        console.log(`Balance of ${minter}: ${ethers.utils.formatEther(balance)} ETH`);
 
-        // Set the funder's balance to a high value
-        await network.provider.request({
-            method: 'hardhat_setBalance',
-            params: [
-                funder.address,
-                ethers.utils.parseEther("100000000.0").toHexString(), // Set balance to 100000000 ETH
-            ],
-        });
-
-        // Send some ETH to the minter address
-        await funder.sendTransaction({
-            to: minter,
-            value: ethers.utils.parseEther("10000.0"), // send 10000 ETH
-            gasLimit: 1000000,
-        });
+        await network.provider.send("hardhat_setBalance", [
+            minter,
+            ethers.utils.parseEther("10000000000000").toHexString(),
+        ]);
     } catch (e) {
         console.log(`Error: ${e.message}`);
     }
