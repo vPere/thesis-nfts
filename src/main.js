@@ -1,17 +1,17 @@
 const {ethers, network} = require("hardhat");
 const fs = require("fs");
-const {getContractAddresses} = require("../input/contract-storage");
-const Csv = require("./helpers/Csv");
+const {getContractAddresses} = require("./helpers/contract-storage");
+const Csv = require("./helpers/CsvHelper");
 const {runBalanceOfTests} = require("./tests/balanceOfTests");
 const {runOwnerOfTests} = require("./tests/ownerOfTests");
 const {runTransferFromTests} = require("./tests/transferFromTests");
 const {runSafeTransferFromTests} = require("./tests/safeTransferFromTests");
 const {LOAD_ABI_FILES, GET_ABI_FILE} = require("./helpers/abiHelper");
-const {runApproveTests} = require("./tests/aproveTests");
+const {runApproveTests} = require("./tests/approveTests");
 const {runSetApprovalForAllTests} = require("./tests/setApprovalForAllTests");
 const {runGetApprovedTests} = require("./tests/getApprovedTests");
 const {runIsApprovedForAllTests} = require("./tests/isApprovedForAllTests");
-const {runSupportsInterfaceTests} = require("./tests/165supportsInterfaceTests");
+const {runSupportsInterfaceTests} = require("./helpers/supportsInterfaceHelper");
 const {runSafeTransferFromWithDataTests} = require("./tests/safeTransferFrom-WithData-Tests");
 
 async function main() {

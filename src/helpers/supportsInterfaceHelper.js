@@ -1,4 +1,4 @@
-// src/tests/165supportsInterfaceTests.js
+// src/tests/supportsInterfaceHelper.js
 const { ethers } = require("ethers");
 
 /**

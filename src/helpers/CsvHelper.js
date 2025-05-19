@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require("path");
-class Csv {
+class CsvHelper {
 
     constructor() {
         this.timestamp = this.getTimestamp();
@@ -55,4 +55,4 @@ class Csv {
     }
 }
 
-module.exports = Csv;
+module.exports = CsvHelper;
