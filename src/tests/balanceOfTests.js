@@ -30,7 +30,7 @@ async function runBalanceOfTests(address, abi, signer) {
     await testCase("BO: Empty string", "");
     await testCase("BO: Short address", "0x1234");
     await testCase("BO: Invalid hex", "notAnAddress");
-    await testCase("BO: Zero address (valid)", "0x0000000000000000000000000000000000000000");
+    await testCase("BO: Zero address", "0x0000000000000000000000000000000000000000");
     await testCase("BO: Number instead of address", 123456);
     await testCase("BO: Boolean instead of address", true);
     await testCase("BO: Array instead of address", ["0x0000000000000000000000000000000000000000"]);
