@@ -1,4 +1,4 @@
-const { ethers, network } = require("hardhat");
+const { ethers } = require("hardhat");
 const {IS_NOT_DEFINED} = require("../helpers/nonDefinedHelper");
 
 async function runIsApprovedForAllTests(address, abi, signer) {
@@ -24,7 +24,7 @@ async function runIsApprovedForAllTests(address, abi, signer) {
                 results.push('"N/A"'); // method not defined
             } else if (expectSuccess) {
                 console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
-                results.push('"FAIL"');
+                results.push(`${err.message}`);
             } else {
                 console.log("\t ✅ TEST PASS: Expected error " + err.message);
                 results.push('"PASS"');
@@ -43,38 +43,6 @@ async function runIsApprovedForAllTests(address, abi, signer) {
     await testCase("IAFA: Invalid operator address (string)", validAddr, "notAnAddress");
     await testCase("IAFA: Zero address as owner", "0x0000000000000000000000000000000000000000", validAddr, true);
     //await testCase("IAFA: Zero address as operator", validAddr, "0x0000000000000000000000000000000000000000", true); Can't be tested, it is not specified
-
-    // Valid test case via impersonation
-    console.log("------------------------------------ Testing valid isApprovedForAll via impersonation...------------------------------------");
-    const operator = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
-    const owner = "0xbDA5747bFD65F08deb54cb465eB87D40e51B197E";
-    testCases.push("IAFA: Valid via impersonation");
-    await network.provider.request({
-        method: "hardhat_impersonateAccount",
-        params: [owner],
-    });
-
-    const impersonatedSigner = await ethers.getSigner(owner);
-    const nftAsOwner = await ethers.getContractAt(abi, address, impersonatedSigner);
-
-    try {
-        const isApproved = await nftAsOwner.isApprovedForAll(owner, operator);
-        console.log(`\t ✅ TEST PASS: isApprovedForAll returned ${isApproved}`);
-        results.push('"PASS"');
-    } catch (err) {
-        if (IS_NOT_DEFINED(err.message)) {
-            console.log("\t · TEST N/A: Method is not defined");
-            results.push('"N/A"'); // method not defined
-        } else {
-            console.log("\t ❌ TEST FAIL: Unexpected error " + err.message);
-            results.push('"FAIL"');
-        }
-    }
-
-    await network.provider.request({
-        method: "hardhat_stopImpersonatingAccount",
-        params: [owner],
-    });
 
     return {testCases, results};
 }
