@@ -39,13 +39,7 @@ async function runOwnerOfTests(address, abi, signer) {
     await testCase("OO: Floating-point number", 1.5);
     await testCase("OO: Boolean input", true);
     await testCase("OO: Object instead of number", { id: 1 });
-    /* TODO: Show to Andreas
-    const input = ethers.BigNumber.from([1,2,3]);
-    console.log("Encoded input: ", input);
-    console.log("Input type:", typeof input);
-    console.log("Actual input value:", input);
-    await testCase("OO: Number", input);
-    await testCase("OO: Array instead of a number", [1,2,3]);*/
+
 
     return {testCases, results};
 }
