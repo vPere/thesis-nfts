@@ -1,4 +1,4 @@
-# NFT Contract Testing Framework
+#  NFT Smart Contract Invalid Input Testing Framework
 
 This project is a comprehensive testing framework designed to interact with and validate the functionality of ERC-721 (NFT) smart contracts. It uses [Hardhat](https://hardhat.org/) to simulate blockchain behavior and includes a wide range of test cases for commonly used ERC-721 methods.
 
